@@ -1,0 +1,99 @@
+
+application {
+  config {
+    baseName ehs,
+    applicationType monolith,
+    packageName com,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    devDatabaseType postgresql,
+  }
+  entities *
+}
+entity Location {
+	nameAr String,
+    nameEn String
+}
+
+entity Category {
+	nameAr String,
+    nameEn String,
+    isSubCategory Boolean
+}
+
+entity Template {
+	titleAr String,
+    titleEn String,
+    duration String
+}
+
+
+entity Field {
+	nameAr String,
+	nameAn String
+}
+entity TemplateType {
+	nameAr String,
+	nameAn String
+}
+entity FieldType {
+	nameAr String,
+	nameAn String
+}
+
+entity Form {
+	nameAr String,
+	nameAn String
+}
+
+entity FormStatus {
+	nameAr String,
+	nameAn String
+}
+
+entity LocationType {
+	nameAr String,
+	nameAn String
+}
+
+entity LocationStatus {
+	nameAr String,
+	nameAn String
+}
+
+
+relationship ManyToOne {
+	Location{locationType} to LocationType,
+	Location{locationStatus} to LocationStatus,
+	Form{listStatus} to FormStatus,
+	Template{templateType} to TemplateType,
+	Field{fieldType} to FieldType,
+	Template{subCategory} to Category,
+    Category{parent} to Category
+
+}
+
+relationship ManyToMany {
+	Template to Field
+}
+
+relationship OneToMany {
+	Template to Form{template},
+
+}
+
+// defining multiple oneToOne relationships
+
+
+// Set pagination options
+paginate Location with infinite-scroll
+paginate Template, Form, Field with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

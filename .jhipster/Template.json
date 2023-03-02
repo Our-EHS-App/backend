@@ -1,0 +1,52 @@
+{
+  "applications": ["ehs"],
+  "changelogDate": "20230302161327",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "template",
+  "fields": [
+    {
+      "fieldName": "titleAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "titleEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "duration",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Template",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "form",
+      "otherEntityRelationshipName": "template",
+      "relationshipName": "form",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "templateType",
+      "relationshipName": "templateType",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "category",
+      "relationshipName": "subCategory",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "field",
+      "otherEntityRelationshipName": "template",
+      "ownerSide": true,
+      "relationshipName": "field",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

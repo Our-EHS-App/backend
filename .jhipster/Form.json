@@ -1,0 +1,36 @@
+{
+  "applications": ["ehs"],
+  "changelogDate": "20230302161331",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "form",
+  "fields": [
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameAn",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Form",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "formStatus",
+      "relationshipName": "listStatus",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "template",
+      "otherEntityRelationshipName": "form",
+      "relationshipName": "template",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

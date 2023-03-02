@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Field.
+    -->
+    <changeSet id="20230302161328-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="field_type_id"
+                                 baseTableName="field"
+                                 constraintName="fk_field__field_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="field_type"/>
+    </changeSet>
+</databaseChangeLog>

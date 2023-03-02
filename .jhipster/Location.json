@@ -1,0 +1,35 @@
+{
+  "applications": ["ehs"],
+  "changelogDate": "20230302161325",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "location",
+  "fields": [
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameEn",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Location",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "locationType",
+      "relationshipName": "locationType",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "locationStatus",
+      "relationshipName": "locationStatus",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

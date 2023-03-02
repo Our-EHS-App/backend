@@ -1,0 +1,24 @@
+{
+  "applications": ["ehs"],
+  "changelogDate": "20230302161334",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "location_status",
+  "fields": [
+    {
+      "fieldName": "nameAr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nameAn",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LocationStatus",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}
