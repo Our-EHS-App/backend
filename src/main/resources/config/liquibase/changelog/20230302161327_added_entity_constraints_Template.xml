@@ -21,14 +21,14 @@
                                  referencedTableName="category"/>
 
         <addForeignKeyConstraint baseColumnNames="template_id"
-                                 baseTableName="rel_template__field"
-                                 constraintName="fk_rel_template__field__template_id"
+                                 baseTableName="template_field"
+                                 constraintName="fk_template_field__template_id"
                                  referencedColumnNames="id"
                                  referencedTableName="template"/>
 
         <addForeignKeyConstraint baseColumnNames="field_id"
-                                 baseTableName="rel_template__field"
-                                 constraintName="fk_rel_template__field__field_id"
+                                 baseTableName="template_field"
+                                 constraintName="fk_template_field__field_id"
                                  referencedColumnNames="id"
                                  referencedTableName="field"/>
     </changeSet>

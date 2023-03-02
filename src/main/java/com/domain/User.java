@@ -21,7 +21,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A user.
  */
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
