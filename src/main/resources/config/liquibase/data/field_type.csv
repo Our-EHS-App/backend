@@ -1,0 +1,6 @@
+id;name_ar;name_en
+1;نص;Text
+2;خانة اختيار;Checkbox
+3;رقم;Number
+4;مرفقات;Attachment
+5;تقييم;Scale
