@@ -34,8 +34,8 @@ class FormResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/forms";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class FormResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Form createEntity(EntityManager em) {
-        Form form = new Form().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        Form form = new Form().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return form;
     }
 
@@ -75,7 +75,7 @@ class FormResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Form createUpdatedEntity(EntityManager em) {
-        Form form = new Form().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        Form form = new Form().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return form;
     }
 
@@ -99,7 +99,7 @@ class FormResourceIT {
         assertThat(formList).hasSize(databaseSizeBeforeCreate + 1);
         Form testForm = formList.get(formList.size() - 1);
         assertThat(testForm.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testForm.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testForm.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -134,7 +134,7 @@ class FormResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(form.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -150,7 +150,7 @@ class FormResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(form.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -172,7 +172,7 @@ class FormResourceIT {
         Form updatedForm = formRepository.findById(form.getId()).get();
         // Disconnect from session so that the updates on updatedForm are not directly saved in db
         em.detach(updatedForm);
-        updatedForm.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedForm.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         FormDTO formDTO = formMapper.toDto(updatedForm);
 
         restFormMockMvc
@@ -188,7 +188,7 @@ class FormResourceIT {
         assertThat(formList).hasSize(databaseSizeBeforeUpdate);
         Form testForm = formList.get(formList.size() - 1);
         assertThat(testForm.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testForm.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testForm.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -283,7 +283,7 @@ class FormResourceIT {
         assertThat(formList).hasSize(databaseSizeBeforeUpdate);
         Form testForm = formList.get(formList.size() - 1);
         assertThat(testForm.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testForm.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testForm.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -298,7 +298,7 @@ class FormResourceIT {
         Form partialUpdatedForm = new Form();
         partialUpdatedForm.setId(form.getId());
 
-        partialUpdatedForm.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedForm.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restFormMockMvc
             .perform(
@@ -313,7 +313,7 @@ class FormResourceIT {
         assertThat(formList).hasSize(databaseSizeBeforeUpdate);
         Form testForm = formList.get(formList.size() - 1);
         assertThat(testForm.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testForm.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testForm.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test

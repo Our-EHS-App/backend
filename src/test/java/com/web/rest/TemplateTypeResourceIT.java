@@ -34,8 +34,8 @@ class TemplateTypeResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/template-types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class TemplateTypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TemplateType createEntity(EntityManager em) {
-        TemplateType templateType = new TemplateType().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        TemplateType templateType = new TemplateType().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return templateType;
     }
 
@@ -75,7 +75,7 @@ class TemplateTypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TemplateType createUpdatedEntity(EntityManager em) {
-        TemplateType templateType = new TemplateType().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        TemplateType templateType = new TemplateType().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return templateType;
     }
 
@@ -101,7 +101,7 @@ class TemplateTypeResourceIT {
         assertThat(templateTypeList).hasSize(databaseSizeBeforeCreate + 1);
         TemplateType testTemplateType = templateTypeList.get(templateTypeList.size() - 1);
         assertThat(testTemplateType.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testTemplateType.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testTemplateType.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -138,7 +138,7 @@ class TemplateTypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(templateType.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -154,7 +154,7 @@ class TemplateTypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(templateType.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -176,7 +176,7 @@ class TemplateTypeResourceIT {
         TemplateType updatedTemplateType = templateTypeRepository.findById(templateType.getId()).get();
         // Disconnect from session so that the updates on updatedTemplateType are not directly saved in db
         em.detach(updatedTemplateType);
-        updatedTemplateType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedTemplateType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         TemplateTypeDTO templateTypeDTO = templateTypeMapper.toDto(updatedTemplateType);
 
         restTemplateTypeMockMvc
@@ -192,7 +192,7 @@ class TemplateTypeResourceIT {
         assertThat(templateTypeList).hasSize(databaseSizeBeforeUpdate);
         TemplateType testTemplateType = templateTypeList.get(templateTypeList.size() - 1);
         assertThat(testTemplateType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testTemplateType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testTemplateType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -274,7 +274,7 @@ class TemplateTypeResourceIT {
         TemplateType partialUpdatedTemplateType = new TemplateType();
         partialUpdatedTemplateType.setId(templateType.getId());
 
-        partialUpdatedTemplateType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedTemplateType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restTemplateTypeMockMvc
             .perform(
@@ -289,7 +289,7 @@ class TemplateTypeResourceIT {
         assertThat(templateTypeList).hasSize(databaseSizeBeforeUpdate);
         TemplateType testTemplateType = templateTypeList.get(templateTypeList.size() - 1);
         assertThat(testTemplateType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testTemplateType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testTemplateType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -304,7 +304,7 @@ class TemplateTypeResourceIT {
         TemplateType partialUpdatedTemplateType = new TemplateType();
         partialUpdatedTemplateType.setId(templateType.getId());
 
-        partialUpdatedTemplateType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedTemplateType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restTemplateTypeMockMvc
             .perform(
@@ -319,7 +319,7 @@ class TemplateTypeResourceIT {
         assertThat(templateTypeList).hasSize(databaseSizeBeforeUpdate);
         TemplateType testTemplateType = templateTypeList.get(templateTypeList.size() - 1);
         assertThat(testTemplateType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testTemplateType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testTemplateType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test

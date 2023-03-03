@@ -13,7 +13,7 @@ public class FieldDTO implements Serializable {
 
     private String nameAr;
 
-    private String nameAn;
+    private String nameEn;
 
     private FieldTypeDTO fieldType;
 
@@ -33,12 +33,12 @@ public class FieldDTO implements Serializable {
         this.nameAr = nameAr;
     }
 
-    public String getNameAn() {
-        return nameAn;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setNameAn(String nameAn) {
-        this.nameAn = nameAn;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     public FieldTypeDTO getFieldType() {
@@ -76,7 +76,7 @@ public class FieldDTO implements Serializable {
         return "FieldDTO{" +
             "id=" + getId() +
             ", nameAr='" + getNameAr() + "'" +
-            ", nameAn='" + getNameAn() + "'" +
+            ", nameEn='" + getNameEn() + "'" +
             ", fieldType=" + getFieldType() +
             "}";
     }

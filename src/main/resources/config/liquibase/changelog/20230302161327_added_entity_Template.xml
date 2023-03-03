@@ -35,7 +35,7 @@
 
     <changeSet id="20230302161327-1-relations" author="jhipster">
 
-        <createTable tableName="template_field">
+        <createTable tableName="rel_template__field">
             <column name="field_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -44,7 +44,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="template_id, field_id" tableName="template_field"/>
+        <addPrimaryKey columnNames="template_id, field_id" tableName="rel_template__field"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

@@ -48,7 +48,7 @@ public class Template implements Serializable {
 
     @ManyToMany
     @JoinTable(
-        name = "template_field",
+        name = "rel_template__field",
         joinColumns = @JoinColumn(name = "template_id"),
         inverseJoinColumns = @JoinColumn(name = "field_id")
     )

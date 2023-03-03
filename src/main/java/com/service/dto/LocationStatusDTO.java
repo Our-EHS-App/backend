@@ -13,7 +13,7 @@ public class LocationStatusDTO implements Serializable {
 
     private String nameAr;
 
-    private String nameAn;
+    private String nameEn;
 
     public Long getId() {
         return id;
@@ -31,12 +31,12 @@ public class LocationStatusDTO implements Serializable {
         this.nameAr = nameAr;
     }
 
-    public String getNameAn() {
-        return nameAn;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setNameAn(String nameAn) {
-        this.nameAn = nameAn;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class LocationStatusDTO implements Serializable {
         return "LocationStatusDTO{" +
             "id=" + getId() +
             ", nameAr='" + getNameAr() + "'" +
-            ", nameAn='" + getNameAn() + "'" +
+            ", nameEn='" + getNameEn() + "'" +
             "}";
     }
 }

@@ -30,35 +30,35 @@ entity Template {
 
 entity Field {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 entity TemplateType {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 entity FieldType {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 
 entity Form {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 
 entity FormStatus {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 
 entity LocationType {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 
 entity LocationStatus {
 	nameAr String,
-	nameAn String
+	nameEn String
 }
 
 

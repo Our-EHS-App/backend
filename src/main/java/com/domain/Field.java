@@ -28,8 +28,8 @@ public class Field implements Serializable {
     @Column(name = "name_ar")
     private String nameAr;
 
-    @Column(name = "name_an")
-    private String nameAn;
+    @Column(name = "name_en")
+    private String nameEn;
 
     @ManyToOne
     private FieldType fieldType;
@@ -67,17 +67,17 @@ public class Field implements Serializable {
         this.nameAr = nameAr;
     }
 
-    public String getNameAn() {
-        return this.nameAn;
+    public String getNameEn() {
+        return this.nameEn;
     }
 
-    public Field nameAn(String nameAn) {
-        this.setNameAn(nameAn);
+    public Field nameEn(String nameEn) {
+        this.setNameEn(nameEn);
         return this;
     }
 
-    public void setNameAn(String nameAn) {
-        this.nameAn = nameAn;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     public FieldType getFieldType() {
@@ -149,7 +149,7 @@ public class Field implements Serializable {
         return "Field{" +
             "id=" + getId() +
             ", nameAr='" + getNameAr() + "'" +
-            ", nameAn='" + getNameAn() + "'" +
+            ", nameEn='" + getNameEn() + "'" +
             "}";
     }
 }

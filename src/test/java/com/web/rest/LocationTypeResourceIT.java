@@ -34,8 +34,8 @@ class LocationTypeResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/location-types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class LocationTypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LocationType createEntity(EntityManager em) {
-        LocationType locationType = new LocationType().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        LocationType locationType = new LocationType().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return locationType;
     }
 
@@ -75,7 +75,7 @@ class LocationTypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LocationType createUpdatedEntity(EntityManager em) {
-        LocationType locationType = new LocationType().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        LocationType locationType = new LocationType().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return locationType;
     }
 
@@ -101,7 +101,7 @@ class LocationTypeResourceIT {
         assertThat(locationTypeList).hasSize(databaseSizeBeforeCreate + 1);
         LocationType testLocationType = locationTypeList.get(locationTypeList.size() - 1);
         assertThat(testLocationType.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testLocationType.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testLocationType.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -138,7 +138,7 @@ class LocationTypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(locationType.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -154,7 +154,7 @@ class LocationTypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(locationType.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -176,7 +176,7 @@ class LocationTypeResourceIT {
         LocationType updatedLocationType = locationTypeRepository.findById(locationType.getId()).get();
         // Disconnect from session so that the updates on updatedLocationType are not directly saved in db
         em.detach(updatedLocationType);
-        updatedLocationType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedLocationType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         LocationTypeDTO locationTypeDTO = locationTypeMapper.toDto(updatedLocationType);
 
         restLocationTypeMockMvc
@@ -192,7 +192,7 @@ class LocationTypeResourceIT {
         assertThat(locationTypeList).hasSize(databaseSizeBeforeUpdate);
         LocationType testLocationType = locationTypeList.get(locationTypeList.size() - 1);
         assertThat(testLocationType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testLocationType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -274,7 +274,7 @@ class LocationTypeResourceIT {
         LocationType partialUpdatedLocationType = new LocationType();
         partialUpdatedLocationType.setId(locationType.getId());
 
-        partialUpdatedLocationType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedLocationType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restLocationTypeMockMvc
             .perform(
@@ -289,7 +289,7 @@ class LocationTypeResourceIT {
         assertThat(locationTypeList).hasSize(databaseSizeBeforeUpdate);
         LocationType testLocationType = locationTypeList.get(locationTypeList.size() - 1);
         assertThat(testLocationType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testLocationType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -304,7 +304,7 @@ class LocationTypeResourceIT {
         LocationType partialUpdatedLocationType = new LocationType();
         partialUpdatedLocationType.setId(locationType.getId());
 
-        partialUpdatedLocationType.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedLocationType.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restLocationTypeMockMvc
             .perform(
@@ -319,7 +319,7 @@ class LocationTypeResourceIT {
         assertThat(locationTypeList).hasSize(databaseSizeBeforeUpdate);
         LocationType testLocationType = locationTypeList.get(locationTypeList.size() - 1);
         assertThat(testLocationType.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationType.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testLocationType.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test

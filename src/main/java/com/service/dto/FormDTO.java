@@ -13,7 +13,7 @@ public class FormDTO implements Serializable {
 
     private String nameAr;
 
-    private String nameAn;
+    private String nameEn;
 
     private FormStatusDTO listStatus;
 
@@ -35,12 +35,12 @@ public class FormDTO implements Serializable {
         this.nameAr = nameAr;
     }
 
-    public String getNameAn() {
-        return nameAn;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setNameAn(String nameAn) {
-        this.nameAn = nameAn;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     public FormStatusDTO getListStatus() {
@@ -86,7 +86,7 @@ public class FormDTO implements Serializable {
         return "FormDTO{" +
             "id=" + getId() +
             ", nameAr='" + getNameAr() + "'" +
-            ", nameAn='" + getNameAn() + "'" +
+            ", nameEn='" + getNameEn() + "'" +
             ", listStatus=" + getListStatus() +
             ", template=" + getTemplate() +
             "}";

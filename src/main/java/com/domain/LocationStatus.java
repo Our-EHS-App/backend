@@ -25,8 +25,8 @@ public class LocationStatus implements Serializable {
     @Column(name = "name_ar")
     private String nameAr;
 
-    @Column(name = "name_an")
-    private String nameAn;
+    @Column(name = "name_en")
+    private String nameEn;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -56,17 +56,17 @@ public class LocationStatus implements Serializable {
         this.nameAr = nameAr;
     }
 
-    public String getNameAn() {
-        return this.nameAn;
+    public String getNameEn() {
+        return this.nameEn;
     }
 
-    public LocationStatus nameAn(String nameAn) {
-        this.setNameAn(nameAn);
+    public LocationStatus nameEn(String nameEn) {
+        this.setNameEn(nameEn);
         return this;
     }
 
-    public void setNameAn(String nameAn) {
-        this.nameAn = nameAn;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -94,7 +94,7 @@ public class LocationStatus implements Serializable {
         return "LocationStatus{" +
             "id=" + getId() +
             ", nameAr='" + getNameAr() + "'" +
-            ", nameAn='" + getNameAn() + "'" +
+            ", nameEn='" + getNameEn() + "'" +
             "}";
     }
 }

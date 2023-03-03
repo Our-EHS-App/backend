@@ -34,8 +34,8 @@ class FieldResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/fields";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class FieldResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Field createEntity(EntityManager em) {
-        Field field = new Field().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        Field field = new Field().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return field;
     }
 
@@ -75,7 +75,7 @@ class FieldResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Field createUpdatedEntity(EntityManager em) {
-        Field field = new Field().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        Field field = new Field().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return field;
     }
 
@@ -99,7 +99,7 @@ class FieldResourceIT {
         assertThat(fieldList).hasSize(databaseSizeBeforeCreate + 1);
         Field testField = fieldList.get(fieldList.size() - 1);
         assertThat(testField.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testField.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testField.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -134,7 +134,7 @@ class FieldResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(field.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -150,7 +150,7 @@ class FieldResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(field.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -172,7 +172,7 @@ class FieldResourceIT {
         Field updatedField = fieldRepository.findById(field.getId()).get();
         // Disconnect from session so that the updates on updatedField are not directly saved in db
         em.detach(updatedField);
-        updatedField.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedField.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         FieldDTO fieldDTO = fieldMapper.toDto(updatedField);
 
         restFieldMockMvc
@@ -188,7 +188,7 @@ class FieldResourceIT {
         assertThat(fieldList).hasSize(databaseSizeBeforeUpdate);
         Field testField = fieldList.get(fieldList.size() - 1);
         assertThat(testField.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testField.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testField.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -281,7 +281,7 @@ class FieldResourceIT {
         assertThat(fieldList).hasSize(databaseSizeBeforeUpdate);
         Field testField = fieldList.get(fieldList.size() - 1);
         assertThat(testField.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testField.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testField.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -296,7 +296,7 @@ class FieldResourceIT {
         Field partialUpdatedField = new Field();
         partialUpdatedField.setId(field.getId());
 
-        partialUpdatedField.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedField.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restFieldMockMvc
             .perform(
@@ -311,7 +311,7 @@ class FieldResourceIT {
         assertThat(fieldList).hasSize(databaseSizeBeforeUpdate);
         Field testField = fieldList.get(fieldList.size() - 1);
         assertThat(testField.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testField.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testField.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test

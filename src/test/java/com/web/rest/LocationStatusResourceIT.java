@@ -34,8 +34,8 @@ class LocationStatusResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/location-statuses";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class LocationStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LocationStatus createEntity(EntityManager em) {
-        LocationStatus locationStatus = new LocationStatus().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        LocationStatus locationStatus = new LocationStatus().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return locationStatus;
     }
 
@@ -75,7 +75,7 @@ class LocationStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static LocationStatus createUpdatedEntity(EntityManager em) {
-        LocationStatus locationStatus = new LocationStatus().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        LocationStatus locationStatus = new LocationStatus().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return locationStatus;
     }
 
@@ -101,7 +101,7 @@ class LocationStatusResourceIT {
         assertThat(locationStatusList).hasSize(databaseSizeBeforeCreate + 1);
         LocationStatus testLocationStatus = locationStatusList.get(locationStatusList.size() - 1);
         assertThat(testLocationStatus.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testLocationStatus.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testLocationStatus.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -138,7 +138,7 @@ class LocationStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(locationStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -154,7 +154,7 @@ class LocationStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(locationStatus.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -176,7 +176,7 @@ class LocationStatusResourceIT {
         LocationStatus updatedLocationStatus = locationStatusRepository.findById(locationStatus.getId()).get();
         // Disconnect from session so that the updates on updatedLocationStatus are not directly saved in db
         em.detach(updatedLocationStatus);
-        updatedLocationStatus.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedLocationStatus.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         LocationStatusDTO locationStatusDTO = locationStatusMapper.toDto(updatedLocationStatus);
 
         restLocationStatusMockMvc
@@ -192,7 +192,7 @@ class LocationStatusResourceIT {
         assertThat(locationStatusList).hasSize(databaseSizeBeforeUpdate);
         LocationStatus testLocationStatus = locationStatusList.get(locationStatusList.size() - 1);
         assertThat(testLocationStatus.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationStatus.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testLocationStatus.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -289,7 +289,7 @@ class LocationStatusResourceIT {
         assertThat(locationStatusList).hasSize(databaseSizeBeforeUpdate);
         LocationStatus testLocationStatus = locationStatusList.get(locationStatusList.size() - 1);
         assertThat(testLocationStatus.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationStatus.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testLocationStatus.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -304,7 +304,7 @@ class LocationStatusResourceIT {
         LocationStatus partialUpdatedLocationStatus = new LocationStatus();
         partialUpdatedLocationStatus.setId(locationStatus.getId());
 
-        partialUpdatedLocationStatus.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedLocationStatus.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restLocationStatusMockMvc
             .perform(
@@ -319,7 +319,7 @@ class LocationStatusResourceIT {
         assertThat(locationStatusList).hasSize(databaseSizeBeforeUpdate);
         LocationStatus testLocationStatus = locationStatusList.get(locationStatusList.size() - 1);
         assertThat(testLocationStatus.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testLocationStatus.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testLocationStatus.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test

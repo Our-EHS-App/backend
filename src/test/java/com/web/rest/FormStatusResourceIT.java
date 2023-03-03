@@ -34,8 +34,8 @@ class FormStatusResourceIT {
     private static final String DEFAULT_NAME_AR = "AAAAAAAAAA";
     private static final String UPDATED_NAME_AR = "BBBBBBBBBB";
 
-    private static final String DEFAULT_NAME_AN = "AAAAAAAAAA";
-    private static final String UPDATED_NAME_AN = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME_EN = "AAAAAAAAAA";
+    private static final String UPDATED_NAME_EN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/form-statuses";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -64,7 +64,7 @@ class FormStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FormStatus createEntity(EntityManager em) {
-        FormStatus formStatus = new FormStatus().nameAr(DEFAULT_NAME_AR).nameAn(DEFAULT_NAME_AN);
+        FormStatus formStatus = new FormStatus().nameAr(DEFAULT_NAME_AR).nameEn(DEFAULT_NAME_EN);
         return formStatus;
     }
 
@@ -75,7 +75,7 @@ class FormStatusResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static FormStatus createUpdatedEntity(EntityManager em) {
-        FormStatus formStatus = new FormStatus().nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        FormStatus formStatus = new FormStatus().nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         return formStatus;
     }
 
@@ -99,7 +99,7 @@ class FormStatusResourceIT {
         assertThat(formStatusList).hasSize(databaseSizeBeforeCreate + 1);
         FormStatus testFormStatus = formStatusList.get(formStatusList.size() - 1);
         assertThat(testFormStatus.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testFormStatus.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testFormStatus.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -134,7 +134,7 @@ class FormStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(formStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].nameAr").value(hasItem(DEFAULT_NAME_AR)))
-            .andExpect(jsonPath("$.[*].nameAn").value(hasItem(DEFAULT_NAME_AN)));
+            .andExpect(jsonPath("$.[*].nameEn").value(hasItem(DEFAULT_NAME_EN)));
     }
 
     @Test
@@ -150,7 +150,7 @@ class FormStatusResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(formStatus.getId().intValue()))
             .andExpect(jsonPath("$.nameAr").value(DEFAULT_NAME_AR))
-            .andExpect(jsonPath("$.nameAn").value(DEFAULT_NAME_AN));
+            .andExpect(jsonPath("$.nameEn").value(DEFAULT_NAME_EN));
     }
 
     @Test
@@ -172,7 +172,7 @@ class FormStatusResourceIT {
         FormStatus updatedFormStatus = formStatusRepository.findById(formStatus.getId()).get();
         // Disconnect from session so that the updates on updatedFormStatus are not directly saved in db
         em.detach(updatedFormStatus);
-        updatedFormStatus.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        updatedFormStatus.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
         FormStatusDTO formStatusDTO = formStatusMapper.toDto(updatedFormStatus);
 
         restFormStatusMockMvc
@@ -188,7 +188,7 @@ class FormStatusResourceIT {
         assertThat(formStatusList).hasSize(databaseSizeBeforeUpdate);
         FormStatus testFormStatus = formStatusList.get(formStatusList.size() - 1);
         assertThat(testFormStatus.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testFormStatus.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testFormStatus.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
@@ -281,7 +281,7 @@ class FormStatusResourceIT {
         assertThat(formStatusList).hasSize(databaseSizeBeforeUpdate);
         FormStatus testFormStatus = formStatusList.get(formStatusList.size() - 1);
         assertThat(testFormStatus.getNameAr()).isEqualTo(DEFAULT_NAME_AR);
-        assertThat(testFormStatus.getNameAn()).isEqualTo(DEFAULT_NAME_AN);
+        assertThat(testFormStatus.getNameEn()).isEqualTo(DEFAULT_NAME_EN);
     }
 
     @Test
@@ -296,7 +296,7 @@ class FormStatusResourceIT {
         FormStatus partialUpdatedFormStatus = new FormStatus();
         partialUpdatedFormStatus.setId(formStatus.getId());
 
-        partialUpdatedFormStatus.nameAr(UPDATED_NAME_AR).nameAn(UPDATED_NAME_AN);
+        partialUpdatedFormStatus.nameAr(UPDATED_NAME_AR).nameEn(UPDATED_NAME_EN);
 
         restFormStatusMockMvc
             .perform(
@@ -311,7 +311,7 @@ class FormStatusResourceIT {
         assertThat(formStatusList).hasSize(databaseSizeBeforeUpdate);
         FormStatus testFormStatus = formStatusList.get(formStatusList.size() - 1);
         assertThat(testFormStatus.getNameAr()).isEqualTo(UPDATED_NAME_AR);
-        assertThat(testFormStatus.getNameAn()).isEqualTo(UPDATED_NAME_AN);
+        assertThat(testFormStatus.getNameEn()).isEqualTo(UPDATED_NAME_EN);
     }
 
     @Test
