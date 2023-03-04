@@ -104,6 +104,11 @@
         </loadData>
     </changeSet>
 
+    <changeSet id="20230304-2" author="Abdulaziz">
+        <update tableName="app_user">
+            <column name="password_hash" value="$2a$10$ywpISJQhSMYKe45FNytuc.r2CoqK/4I94xHJ2CRvO.CLkhgRfnp0i"/>
+        </update>
+    </changeSet>
     <changeSet author="jhipster" id="00000000000002" context="test">
         <createTable tableName="jhi_date_time_wrapper">
             <column  name="id" type="BIGINT">
