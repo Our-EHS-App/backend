@@ -56,7 +56,7 @@ public class DomainUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = user
             .getAuthorities()
             .stream()
-            .map(Authority::getName)
+            .map(Authority::getCode)
             .map(SimpleGrantedAuthority::new)
             .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(), grantedAuthorities);

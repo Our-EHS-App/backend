@@ -15,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "jhi_authority")
+@Table(name = "authority")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
@@ -25,14 +25,36 @@ public class Authority implements Serializable {
     @Size(max = 50)
     @Id
     @Column(length = 50)
-    private String name;
+    private String code;
 
-    public String getName() {
-        return name;
+    @Column(name = "name_ar")
+    private String nameAr;
+
+    @Column(name = "name_en")
+    private String nameEn;
+
+    public String getCode() {
+        return code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getNameAr() {
+        return nameAr;
+    }
+
+    public void setNameAr(String nameAr) {
+        this.nameAr = nameAr;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
     @Override
@@ -43,19 +65,19 @@ public class Authority implements Serializable {
         if (!(o instanceof Authority)) {
             return false;
         }
-        return Objects.equals(name, ((Authority) o).name);
+        return Objects.equals(code, ((Authority) o).code);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(code);
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "Authority{" +
-            "name='" + name + '\'' +
+            "name='" + code + '\'' +
             "}";
     }
 }
