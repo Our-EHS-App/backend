@@ -27,6 +27,10 @@
     <include file="config/liquibase/changelog/20230302161327_added_entity_constraints_Template.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230302161328_added_entity_constraints_Field.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230302161331_added_entity_constraints_Form.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230302161333_added_entity_OrganizationType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230302161325_added_entity_Organization.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230302161325_added_entity_constraints_Organization.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
+<!--todo-->
