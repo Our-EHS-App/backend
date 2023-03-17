@@ -31,8 +31,8 @@ public class Template extends AbstractAuditingEntity<Long> implements Serializab
     @Column(name = "title_en")
     private String titleEn;
 
-    @Column(name = "duration")
-    private String duration;
+    @Column(name = "frequency")
+    private String frequency;
 
     @OneToMany(mappedBy = "template")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -97,17 +97,17 @@ public class Template extends AbstractAuditingEntity<Long> implements Serializab
         this.titleEn = titleEn;
     }
 
-    public String getDuration() {
-        return this.duration;
+    public String getFrequency() {
+        return this.frequency;
     }
 
     public Template duration(String duration) {
-        this.setDuration(duration);
+        this.setFrequency(duration);
         return this;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
     public Set<Form> getForms() {
@@ -218,7 +218,7 @@ public class Template extends AbstractAuditingEntity<Long> implements Serializab
             "id=" + getId() +
             ", titleAr='" + getTitleAr() + "'" +
             ", titleEn='" + getTitleEn() + "'" +
-            ", duration='" + getDuration() + "'" +
+            ", duration='" + getFrequency() + "'" +
             "}";
     }
 }

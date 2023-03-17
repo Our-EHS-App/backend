@@ -17,7 +17,7 @@ public class TemplateDTO implements Serializable {
 
     private String titleEn;
 
-    private String duration;
+    private String frequency;
 
     private TemplateTypeDTO templateType;
 
@@ -49,12 +49,12 @@ public class TemplateDTO implements Serializable {
         this.titleEn = titleEn;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
     public TemplateTypeDTO getTemplateType() {
@@ -109,7 +109,7 @@ public class TemplateDTO implements Serializable {
             "id=" + getId() +
             ", titleAr='" + getTitleAr() + "'" +
             ", titleEn='" + getTitleEn() + "'" +
-            ", duration='" + getDuration() + "'" +
+            ", duration='" + getFrequency() + "'" +
             ", templateType=" + getTemplateType() +
             ", subCategory=" + getSubCategory() +
             ", fields=" + getFields() +

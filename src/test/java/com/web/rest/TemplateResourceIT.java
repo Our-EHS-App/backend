@@ -25,7 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -119,7 +118,7 @@ class TemplateResourceIT {
         Template testTemplate = templateList.get(templateList.size() - 1);
         assertThat(testTemplate.getTitleAr()).isEqualTo(DEFAULT_TITLE_AR);
         assertThat(testTemplate.getTitleEn()).isEqualTo(DEFAULT_TITLE_EN);
-        assertThat(testTemplate.getDuration()).isEqualTo(DEFAULT_DURATION);
+        assertThat(testTemplate.getFrequency()).isEqualTo(DEFAULT_DURATION);
     }
 
     @Test
@@ -228,7 +227,7 @@ class TemplateResourceIT {
         Template testTemplate = templateList.get(templateList.size() - 1);
         assertThat(testTemplate.getTitleAr()).isEqualTo(UPDATED_TITLE_AR);
         assertThat(testTemplate.getTitleEn()).isEqualTo(UPDATED_TITLE_EN);
-        assertThat(testTemplate.getDuration()).isEqualTo(UPDATED_DURATION);
+        assertThat(testTemplate.getFrequency()).isEqualTo(UPDATED_DURATION);
     }
 
     @Test
@@ -324,7 +323,7 @@ class TemplateResourceIT {
         Template testTemplate = templateList.get(templateList.size() - 1);
         assertThat(testTemplate.getTitleAr()).isEqualTo(DEFAULT_TITLE_AR);
         assertThat(testTemplate.getTitleEn()).isEqualTo(UPDATED_TITLE_EN);
-        assertThat(testTemplate.getDuration()).isEqualTo(UPDATED_DURATION);
+        assertThat(testTemplate.getFrequency()).isEqualTo(UPDATED_DURATION);
     }
 
     @Test
@@ -355,7 +354,7 @@ class TemplateResourceIT {
         Template testTemplate = templateList.get(templateList.size() - 1);
         assertThat(testTemplate.getTitleAr()).isEqualTo(UPDATED_TITLE_AR);
         assertThat(testTemplate.getTitleEn()).isEqualTo(UPDATED_TITLE_EN);
-        assertThat(testTemplate.getDuration()).isEqualTo(UPDATED_DURATION);
+        assertThat(testTemplate.getFrequency()).isEqualTo(UPDATED_DURATION);
     }
 
     @Test

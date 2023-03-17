@@ -58,6 +58,10 @@
         <addPrimaryKey columnNames="template_id, field_id" tableName="rel_template__field"/>
     </changeSet>
 
+    <changeSet id="16032023-1" author="Abdulaziz">
+        <renameColumn tableName="template" oldColumnName="duration" newColumnName="frequency"/>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--
