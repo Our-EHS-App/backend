@@ -1,10 +1,8 @@
 package com.repository;
 
 import com.domain.Template;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,7 +55,7 @@ public class TemplateRepositoryWithBagRelationshipsImpl implements TemplateRepos
             .setParameter("templates", templates)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
-        Collections.sort(result, (o1, o2) -> Integer.compare(order.get(o1.getId()), order.get(o2.getId())));
+        result.sort(Comparator.comparingInt(o -> order.get(o.getId())));
         return result;
     }
 }

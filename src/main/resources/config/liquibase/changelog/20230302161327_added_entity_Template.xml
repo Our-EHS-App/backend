@@ -33,6 +33,17 @@
         </createTable>
     </changeSet>
 
+
+    <changeSet id="12032023-3" author="Abdulaziz">
+        <addColumn tableName="template">
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </addColumn>
+    </changeSet>
     <changeSet id="20230302161327-1-relations" author="jhipster">
 
         <createTable tableName="rel_template__field">
@@ -45,6 +56,10 @@
         </createTable>
 
         <addPrimaryKey columnNames="template_id, field_id" tableName="rel_template__field"/>
+    </changeSet>
+
+    <changeSet id="16032023-1" author="Abdulaziz">
+        <renameColumn tableName="template" oldColumnName="duration" newColumnName="frequency"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

@@ -31,13 +31,13 @@ public interface TemplateMapper extends EntityMapper<TemplateDTO, Template> {
     TemplateTypeDTO toDtoTemplateTypeId(TemplateType templateType);
 
     @Named("categoryId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
+//    @BeanMapping(ignoreByDefault = true)
+//    @Mapping(target = "id", source = "id")
     CategoryDTO toDtoCategoryId(Category category);
 
     @Named("fieldId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
+//    @BeanMapping(ignoreByDefault = true)
+//    @Mapping(target = "id", source = "id")
     FieldDTO toDtoFieldId(Field field);
 
     @Named("fieldIdSet")

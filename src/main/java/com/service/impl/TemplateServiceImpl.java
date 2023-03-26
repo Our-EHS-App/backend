@@ -1,11 +1,17 @@
 package com.service.impl;
 
+import com.domain.Field;
 import com.domain.Template;
 import com.repository.TemplateRepository;
 import com.service.TemplateService;
+import com.service.dto.FieldDTO;
 import com.service.dto.TemplateDTO;
+import com.service.mapper.FieldMapper;
 import com.service.mapper.TemplateMapper;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,17 +31,28 @@ public class TemplateServiceImpl implements TemplateService {
     private final TemplateRepository templateRepository;
 
     private final TemplateMapper templateMapper;
+    private final FieldMapper fieldMapper;
+    private final FieldServiceImpl fieldService;
 
-    public TemplateServiceImpl(TemplateRepository templateRepository, TemplateMapper templateMapper) {
+
+    public TemplateServiceImpl(TemplateRepository templateRepository, TemplateMapper templateMapper, FieldMapper fieldMapper, FieldServiceImpl fieldService) {
         this.templateRepository = templateRepository;
         this.templateMapper = templateMapper;
+        this.fieldMapper = fieldMapper;
+        this.fieldService = fieldService;
     }
 
     @Override
     public TemplateDTO save(TemplateDTO templateDTO) {
         log.debug("Request to save Template : {}", templateDTO);
+        Set<FieldDTO> fieldSet = templateDTO
+            .getFields()
+            .stream().map(fieldService::save)
+            .collect(Collectors.toSet());
+        templateDTO.setFields(fieldSet);
         Template template = templateMapper.toEntity(templateDTO);
-        template = templateRepository.save(template);
+//        template.setFields(fieldSet);
+        template = templateRepository.saveAndFlush(template);
         return templateMapper.toDto(template);
     }
 
