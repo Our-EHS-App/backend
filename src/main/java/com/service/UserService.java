@@ -94,6 +94,7 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
+        // todo check if this way is suitable?
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {

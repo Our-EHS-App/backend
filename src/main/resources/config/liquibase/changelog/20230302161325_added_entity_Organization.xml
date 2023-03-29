@@ -35,4 +35,9 @@
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
+    <changeSet id="29032023-1" author="Abdulaziz">
+        <addColumn tableName="organization">
+            <column name="email" type="varchar(191)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
