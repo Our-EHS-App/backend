@@ -19,6 +19,16 @@ public class LocationDTO implements Serializable {
 
     private LocationStatusDTO locationStatus;
 
+    private Long organizationId;
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+
     public Long getId() {
         return id;
     }

@@ -34,6 +34,9 @@ public class Location extends AbstractAuditingEntity<Long> implements Serializab
     @ManyToOne
     private LocationStatus locationStatus;
 
+    @ManyToOne
+    private Organization organization;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -43,6 +46,14 @@ public class Location extends AbstractAuditingEntity<Long> implements Serializab
     public Location id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public void setId(Long id) {

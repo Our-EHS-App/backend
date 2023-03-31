@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import com.domain.Location;
+import com.domain.Organization;
 import com.repository.LocationRepository;
 import com.service.LocationService;
 import com.service.dto.LocationDTO;
@@ -25,16 +26,20 @@ public class LocationServiceImpl implements LocationService {
     private final LocationRepository locationRepository;
 
     private final LocationMapper locationMapper;
+    private final OrganizationService organizationService;
 
-    public LocationServiceImpl(LocationRepository locationRepository, LocationMapper locationMapper) {
+    public LocationServiceImpl(LocationRepository locationRepository, LocationMapper locationMapper, OrganizationService organizationService) {
         this.locationRepository = locationRepository;
         this.locationMapper = locationMapper;
+        this.organizationService = organizationService;
     }
 
     @Override
     public LocationDTO save(LocationDTO locationDTO) {
         log.debug("Request to save Location : {}", locationDTO);
+        Organization organization = organizationService.getById(locationDTO.getOrganizationId());
         Location location = locationMapper.toEntity(locationDTO);
+        location.setOrganization(organization);
         location = locationRepository.save(location);
         return locationMapper.toDto(location);
     }
