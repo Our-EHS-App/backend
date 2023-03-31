@@ -1,5 +1,7 @@
 package com.service.dto;
 
+import com.web.rest.vm.ManagedUserVM;
+
 public class OrganizationDTO {
 
     private Long id;
@@ -7,6 +9,7 @@ public class OrganizationDTO {
     private String nameEn;
     private String email;
     private Long organizationTypeId;
+    private ManagedUserVM mainUser;
 
     public OrganizationDTO(Long id, String nameAr, String nameEn, String email, Long organizationTypeId) {
         this.id = id;
@@ -16,9 +19,17 @@ public class OrganizationDTO {
         this.organizationTypeId = organizationTypeId;
     }
 
+
     public OrganizationDTO() {
     }
 
+    public ManagedUserVM getMainUser() {
+        return mainUser;
+    }
+
+    public void setMainUser(ManagedUserVM mainUser) {
+        this.mainUser = mainUser;
+    }
     public Long getId() {
         return id;
     }

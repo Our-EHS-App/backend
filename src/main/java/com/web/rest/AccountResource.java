@@ -1,5 +1,6 @@
 package com.web.rest;
 
+import com.domain.Organization;
 import com.domain.User;
 import com.repository.UserRepository;
 import com.security.SecurityUtils;
@@ -7,6 +8,7 @@ import com.service.MailService;
 import com.service.UserService;
 import com.service.dto.AdminUserDTO;
 import com.service.dto.PasswordChangeDTO;
+import com.service.impl.OrganizationService;
 import com.web.rest.errors.*;
 import com.web.rest.vm.KeyAndPasswordVM;
 import com.web.rest.vm.ManagedUserVM;
@@ -40,11 +42,13 @@ public class AccountResource {
     private final UserService userService;
 
     private final MailService mailService;
+    private final OrganizationService organizationService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService, OrganizationService organizationService) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.organizationService = organizationService;
     }
 
     /**
@@ -61,8 +65,8 @@ public class AccountResource {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
         }
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        mailService.sendActivationEmail(user);
+        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword(), organizationService.getById(managedUserVM.getOrganizationId()));
+//        mailService.sendActivationEmail(user);
     }
 
     /**
@@ -74,7 +78,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }

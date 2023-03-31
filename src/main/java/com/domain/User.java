@@ -93,6 +93,9 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
 
+    @ManyToOne
+    private Organization organization;
+
     public Long getId() {
         return id;
     }
@@ -168,6 +171,14 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     public String getResetKey() {
         return resetKey;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 
     public void setResetKey(String resetKey) {
