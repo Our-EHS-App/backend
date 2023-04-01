@@ -1,7 +1,11 @@
 package com.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -37,6 +41,10 @@ public class Location extends AbstractAuditingEntity<Long> implements Serializab
     @ManyToOne
     private Organization organization;
 
+    @ManyToMany(mappedBy = "locations")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<OrganizationTemplate> organizationTemplates = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -50,6 +58,14 @@ public class Location extends AbstractAuditingEntity<Long> implements Serializab
 
     public Organization getOrganization() {
         return organization;
+    }
+
+    public Set<OrganizationTemplate> getOrganizationTemplates() {
+        return organizationTemplates;
+    }
+
+    public void setOrganizationTemplates(Set<OrganizationTemplate> organizationTemplates) {
+        this.organizationTemplates = organizationTemplates;
     }
 
     public void setOrganization(Organization organization) {

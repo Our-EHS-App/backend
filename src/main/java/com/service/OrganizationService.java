@@ -1,11 +1,9 @@
-package com.service.impl;
+package com.service;
 
 import com.domain.Organization;
 import com.domain.OrganizationType;
 import com.repository.OrganizationRepository;
 import com.repository.OrganizationTypeRepository;
-import com.service.EmailAlreadyUsedException;
-import com.service.UserService;
 import com.service.dto.OrganizationDTO;
 import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
@@ -63,4 +61,12 @@ public class OrganizationService {
         return organizationRepository.findById(id)
             .orElseThrow(()->new CustomException("Organization not found!","المنشأة غير موجودة!","not.found"));
     }
+
+    public OrganizationDTO getByIdToDto(Long id){
+        Organization org = getById(id);
+        return new OrganizationDTO(
+            org.getId(), org.getNameAr(), org.getNameEn(), org.getEmail(), org.getOrganizationType().getId()
+        );
+    }
+
 }

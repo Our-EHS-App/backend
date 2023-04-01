@@ -1,7 +1,7 @@
 package com.web.rest;
 
 import com.service.dto.OrganizationDTO;
-import com.service.impl.OrganizationService;
+import com.service.OrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.api.annotations.ParameterObject;

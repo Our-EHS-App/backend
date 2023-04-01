@@ -2,11 +2,19 @@ package com.service.impl;
 
 import com.domain.Location;
 import com.domain.Organization;
+import com.domain.Template;
 import com.repository.LocationRepository;
 import com.service.LocationService;
+import com.service.OrganizationService;
 import com.service.dto.LocationDTO;
 import com.service.mapper.LocationMapper;
+
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -85,5 +93,20 @@ public class LocationServiceImpl implements LocationService {
     public void delete(Long id) {
         log.debug("Request to delete Location : {}", id);
         locationRepository.deleteById(id);
+    }
+
+    public Location getById(Long id){
+        if(Objects.nonNull(id))
+            return locationRepository.findById(id)
+                .orElseThrow(()-> new CustomException("Location not found!","الموقع غير موجود","not.found"));
+        throw new CustomException("Location not found!","الموقع غير موجود","not.found");
+    }
+
+    public Set<Location> getByIds(Set<Long> ids){
+        return ids
+            .stream()
+            .filter(Objects::nonNull)
+            .map(this::getById)
+            .collect(Collectors.toSet());
     }
 }

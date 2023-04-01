@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import com.domain.Field;
+import com.domain.Location;
 import com.domain.Template;
 import com.repository.TemplateRepository;
 import com.service.TemplateService;
@@ -8,10 +9,13 @@ import com.service.dto.FieldDTO;
 import com.service.dto.TemplateDTO;
 import com.service.mapper.FieldMapper;
 import com.service.mapper.TemplateMapper;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -96,6 +100,15 @@ public class TemplateServiceImpl implements TemplateService {
         log.debug("Request to get Template : {}", id);
         return templateRepository.findOneWithEagerRelationships(id).map(templateMapper::toDto);
     }
+
+    public Template getById(Long id){
+        if(Objects.nonNull(id))
+        return templateRepository.findById(id)
+            .orElseThrow(()-> new CustomException("Template not found!","النموذح غير موجود","not.found"));
+        throw new CustomException("Template not found!","النموذح غير موجود","not.found");
+    }
+
+
 
     @Override
     public void delete(Long id) {

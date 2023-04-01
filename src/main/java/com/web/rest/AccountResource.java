@@ -1,6 +1,5 @@
 package com.web.rest;
 
-import com.domain.Organization;
 import com.domain.User;
 import com.repository.UserRepository;
 import com.security.SecurityUtils;
@@ -8,7 +7,7 @@ import com.service.MailService;
 import com.service.UserService;
 import com.service.dto.AdminUserDTO;
 import com.service.dto.PasswordChangeDTO;
-import com.service.impl.OrganizationService;
+import com.service.OrganizationService;
 import com.web.rest.errors.*;
 import com.web.rest.vm.KeyAndPasswordVM;
 import com.web.rest.vm.ManagedUserVM;
