@@ -1,7 +1,11 @@
 package com.service;
 
+import com.domain.Form;
 import com.service.dto.FormDTO;
+
+import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -55,4 +59,6 @@ public interface FormService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<Form> generateForm(Long orgTempId);
 }

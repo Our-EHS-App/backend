@@ -1,5 +1,6 @@
 package com.web.rest;
 
+import com.domain.Form;
 import com.repository.FormRepository;
 import com.service.FormService;
 import com.service.dto.FormDTO;
@@ -9,13 +10,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -175,5 +176,15 @@ public class FormResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/generate-form/{id}")
+    public ResponseEntity<List<Form>> generateForm(@PathVariable("id") Long orgTempId){
+        log.debug("REST request to generate Form from OrganizationTemplate id: {}", orgTempId);
+        Optional<List<Form>> result = Optional.ofNullable(formService.generateForm(orgTempId));
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orgTempId.toString())
+        );
     }
 }

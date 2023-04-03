@@ -36,6 +36,18 @@ public class Form extends AbstractAuditingEntity<Long> implements Serializable {
     @JsonIgnoreProperties(value = { "forms", "templateType", "subCategory", "fields" }, allowSetters = true)
     private Template template;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "locationType", "locationStatus", "organization" }, allowSetters = true)
+    private Location location;
+
+    @ManyToOne
+    private Organization organization;
+
+    @ManyToOne
+    @JoinColumn(name = "org_temp_id")
+    @JsonIgnoreProperties(value = { "locations", "template", "organization" }, allowSetters = true)
+    private OrganizationTemplate organizationTemplate;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -53,6 +65,30 @@ public class Form extends AbstractAuditingEntity<Long> implements Serializable {
 
     public String getNameAr() {
         return this.nameAr;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public OrganizationTemplate getOrganizationTemplate() {
+        return organizationTemplate;
+    }
+
+    public void setOrganizationTemplate(OrganizationTemplate organizationTemplate) {
+        this.organizationTemplate = organizationTemplate;
     }
 
     public Form nameAr(String nameAr) {
