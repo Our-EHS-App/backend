@@ -56,6 +56,14 @@ public class OrganizationTemplateService {
             throw new CustomException("Can not import template!","لا يمكن ربط المنشأة مع النموذج","Cant.import");
         }
     }
+    @Transactional
+    public void update(ImportOrgTemplateDTO dto){
+        OrganizationTemplate organizationTemplate = organizationTemplateRepository.findByOrganization_IdAndTemplate_Id(dto.getOrgId(), dto.getTemplateId())
+            .orElseThrow(() -> new CustomException("Not found!","غير موجود!","not.found"));
+        Set<Location> locations = checkLocationBelongToOrg(dto);
+        organizationTemplate.setLocations(locations);
+        organizationTemplateRepository.saveAndFlush(organizationTemplate);
+    }
 
     public GetAllOrgTemplatesDTO getAllByOrgId(Long id){
         List<OrganizationTemplate> list = organizationTemplateRepository.findAllByOrganization_id(id);
@@ -84,4 +92,5 @@ public class OrganizationTemplateService {
             .filter(location -> location.getOrganization().getId().equals(dto.getOrgId()))
             .collect(Collectors.toSet());
     }
+    //todo add location to OrganizationTemplate
 }

@@ -38,6 +38,11 @@ public class OrganizationTemplateResource {
 
     }
 
+    @PostMapping("/update")
+    public void update(@RequestBody ImportOrgTemplateDTO dto){
+        log.debug("REST request to register Organization");
+        organizationTemplateService.update(dto);
+    }
 
 
     @GetMapping("/get-all-by-org-id/{id}")

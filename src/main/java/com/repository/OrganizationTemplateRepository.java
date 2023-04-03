@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Template entity.
@@ -16,4 +17,5 @@ import java.util.List;
 public interface OrganizationTemplateRepository extends  JpaRepository<OrganizationTemplate, Long> {
 
     List<OrganizationTemplate> findAllByOrganization_id(Long id);
+    Optional<OrganizationTemplate> findByOrganization_IdAndTemplate_Id(Long orgId, Long tempId);
 }
