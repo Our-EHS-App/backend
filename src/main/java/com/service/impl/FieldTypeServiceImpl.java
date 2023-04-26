@@ -82,4 +82,9 @@ public class FieldTypeServiceImpl implements FieldTypeService {
         log.debug("Request to delete FieldType : {}", id);
         fieldTypeRepository.deleteById(id);
     }
+
+
+    enum FormType{
+
+    }
 }

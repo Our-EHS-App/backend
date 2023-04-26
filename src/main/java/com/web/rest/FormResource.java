@@ -4,6 +4,7 @@ import com.domain.Form;
 import com.repository.FormRepository;
 import com.service.FormService;
 import com.service.dto.FormDTO;
+import com.service.dto.SubmitFormDTO;
 import com.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -186,5 +187,12 @@ public class FormResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orgTempId.toString())
         );
+    }
+
+    @PostMapping("/submit-form")
+    public void submitForm( @RequestBody SubmitFormDTO values){
+        log.debug("REST request to submit Form id: {}", values.getFormId());
+        formService.submitForm(values);
+
     }
 }

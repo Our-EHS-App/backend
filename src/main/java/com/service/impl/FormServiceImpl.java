@@ -1,12 +1,14 @@
 package com.service.impl;
 
-import com.domain.Form;
-import com.domain.FormStatus;
-import com.domain.OrganizationTemplate;
+import com.domain.*;
+import com.repository.FieldRepository;
 import com.repository.FormRepository;
+import com.repository.FormValuesRepository;
 import com.repository.OrganizationTemplateRepository;
 import com.service.FormService;
+import com.service.dto.FieldValueDTO;
 import com.service.dto.FormDTO;
+import com.service.dto.SubmitFormDTO;
 import com.service.mapper.FormMapper;
 
 import java.util.*;
@@ -21,7 +23,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
+import static com.config.Constants.NUMBER_REGEX;
 
 /**
  * Service Implementation for managing {@link Form}.
@@ -33,14 +35,18 @@ public class FormServiceImpl implements FormService {
     private final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
 
     private final FormRepository formRepository;
+    private final FieldRepository fieldRepository;
 
     private final FormMapper formMapper;
     private final OrganizationTemplateRepository organizationTemplateRepository;
+    private final FormValuesRepository formValuesRepository;
 
-    public FormServiceImpl(FormRepository formRepository, FormMapper formMapper, OrganizationTemplateRepository organizationTemplateRepository) {
+    public FormServiceImpl(FormRepository formRepository, FieldRepository fieldRepository, FormMapper formMapper, OrganizationTemplateRepository organizationTemplateRepository, FormValuesRepository formValuesRepository) {
         this.formRepository = formRepository;
+        this.fieldRepository = fieldRepository;
         this.formMapper = formMapper;
         this.organizationTemplateRepository = organizationTemplateRepository;
+        this.formValuesRepository = formValuesRepository;
     }
 
     @Override
@@ -109,6 +115,7 @@ public class FormServiceImpl implements FormService {
         form.setOrganizationTemplate(organizationTemplate);
         form.setNameAr(organizationTemplate.getTemplate().getTitleAr());
         form.setNameEn(organizationTemplate.getTemplate().getTitleEn());
+        // todo status enum
         FormStatus formStatus = new FormStatus();
         form.setListStatus(formStatus.id(1L));
         return formRepository.saveAndFlush(form);
@@ -116,9 +123,48 @@ public class FormServiceImpl implements FormService {
             .collect(Collectors.toList());
     }
 
+    public void submitForm(SubmitFormDTO values){
+        Form form = formRepository.findById(values.getFormId())
+            .orElseThrow(()->new CustomException("Form not found!","النموذج غير موجود!","not.found"));
+        // todo find duplicate ids
+        List<Long> fieldIds = form.getTemplate()
+            .getFields()
+            .stream()
+            .map(Field::getId)
+            .collect(Collectors.toList());
+
+        values.getValues().stream()
+            .map(FieldValueDTO::getFieldId)
+            .allMatch(id -> fieldIds.contains(id));
+
+        List<FormValues> formValues = values.getValues().stream()
+            .map(value -> toEntity(value, form))
+            .collect(Collectors.toList());
+
+
+    }
+
+    private FormValues toEntity(FieldValueDTO value, Form form){
+        Field field = fieldRepository.findById(value.getFieldId())
+            .orElseThrow(()->new CustomException("Field not found!","الخانة غير موجودة!","not.found"));
+        validateValue(field, value.getValue());
+        FormValues formValues = formValuesRepository.findByFormAndField(form, field)
+            .orElse( new FormValues());
+        formValues.setForm(form);
+        formValues.setField(field);
+        formValues.setValue(value.getValue());
+        return formValuesRepository.save(formValues);
+    }
+
+    private void validateValue(Field field,String value){
+        if(field.getFieldType().getNameEn().equalsIgnoreCase("number")){
+            if (!value.matches(NUMBER_REGEX))
+                throw new CustomException("Invalid value", "القيمة غير صحيحة", "invalid.value");
+        }
+    }
+
     @Scheduled(cron="0 * 0/5 * * ?")
     public void generateForms(){
-        log.info("Generate form job started");
         log.info("Generate form job started");
         List<OrganizationTemplate> organizationTemplateList = organizationTemplateRepository.findAll();
         List<Form> forms = organizationTemplateList

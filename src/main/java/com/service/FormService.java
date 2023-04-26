@@ -6,6 +6,7 @@ import com.service.dto.FormDTO;
 import java.util.List;
 import java.util.Optional;
 
+import com.service.dto.SubmitFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -61,4 +62,5 @@ public interface FormService {
     void delete(Long id);
 
     List<Form> generateForm(Long orgTempId);
+    void submitForm(SubmitFormDTO values);
 }
