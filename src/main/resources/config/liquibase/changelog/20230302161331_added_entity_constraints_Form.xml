@@ -20,17 +20,7 @@
                                  referencedColumnNames="id"
                                  referencedTableName="template"/>
     </changeSet>
-    <changeSet id="03042023-1" author="Abdulaziz">
-        <addColumn tableName="form">
-            <column name="org_temp_id" type="bigint"/>
-        </addColumn>
 
-        <addForeignKeyConstraint baseColumnNames="org_temp_id"
-                                 baseTableName="form"
-                                 constraintName="fk_form_org_template_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="organization_template"/>
-    </changeSet>
 
     <changeSet id="03042023-2" author="Abdulaziz">
         <addColumn tableName="form">

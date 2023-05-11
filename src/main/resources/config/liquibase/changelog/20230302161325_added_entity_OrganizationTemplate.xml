@@ -63,4 +63,16 @@
     <changeSet id="01042023-1" author="Abdulaziz">
         <addUniqueConstraint tableName="organization_template" columnNames="template_id, organization_id"/>
     </changeSet>
+
+    <changeSet id="03042023-1" author="Abdulaziz">
+        <addColumn tableName="form">
+            <column name="org_temp_id" type="bigint"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseColumnNames="org_temp_id"
+                                 baseTableName="form"
+                                 constraintName="fk_form_org_template_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="organization_template"/>
+    </changeSet>
 </databaseChangeLog>
