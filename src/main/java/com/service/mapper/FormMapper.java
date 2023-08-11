@@ -23,7 +23,6 @@ public interface FormMapper extends EntityMapper<FormDTO, Form> {
     FormStatusDTO toDtoFormStatusId(FormStatus formStatus);
 
     @Named("templateId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
+//    @BeanMapping(ignoreByDefault = true)
     TemplateDTO toDtoTemplateId(Template template);
 }

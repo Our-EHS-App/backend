@@ -20,6 +20,7 @@ public interface TemplateMapper extends EntityMapper<TemplateDTO, Template> {
     @Mapping(target = "templateType", source = "templateType", qualifiedByName = "templateTypeId")
     @Mapping(target = "subCategory", source = "subCategory", qualifiedByName = "categoryId")
     @Mapping(target = "fields", source = "fields", qualifiedByName = "fieldIdSet")
+//    @Mapping(target = "fields", ignore = true)
     TemplateDTO toDto(Template s);
 
     @Mapping(target = "removeField", ignore = true)
@@ -31,13 +32,16 @@ public interface TemplateMapper extends EntityMapper<TemplateDTO, Template> {
     TemplateTypeDTO toDtoTemplateTypeId(TemplateType templateType);
 
     @Named("categoryId")
-//    @BeanMapping(ignoreByDefault = true)
-//    @Mapping(target = "id", source = "id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
     CategoryDTO toDtoCategoryId(Category category);
 
     @Named("fieldId")
-//    @BeanMapping(ignoreByDefault = true)
-//    @Mapping(target = "id", source = "id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "nameAr", source = "nameAr")
+    @Mapping(target = "nameEn", source = "nameEn")
+    @Mapping(target = "fieldType", source = "fieldType")
     FieldDTO toDtoFieldId(Field field);
 
     @Named("fieldIdSet")

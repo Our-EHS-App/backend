@@ -63,4 +63,5 @@ public interface FormService {
 
     List<Form> generateForm(Long orgTempId);
     void submitForm(SubmitFormDTO values);
+    List<FormDTO> getAllByOrg(Long orgId);
 }

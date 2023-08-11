@@ -124,6 +124,7 @@ public class FormServiceImpl implements FormService {
     }
 
     public void submitForm(SubmitFormDTO values){
+        // todo cant submit more than one
         Form form = formRepository.findById(values.getFormId())
             .orElseThrow(()->new CustomException("Form not found!","النموذج غير موجود!","not.found"));
         // todo find duplicate ids
@@ -133,14 +134,16 @@ public class FormServiceImpl implements FormService {
             .map(Field::getId)
             .collect(Collectors.toList());
 
+        // todo check mandatory fields
         values.getValues().stream()
             .map(FieldValueDTO::getFieldId)
             .allMatch(id -> fieldIds.contains(id));
 
+        //todo check answer match field type
         List<FormValues> formValues = values.getValues().stream()
             .map(value -> toEntity(value, form))
             .collect(Collectors.toList());
-
+        // todo Update form status
 
     }
 
@@ -166,6 +169,7 @@ public class FormServiceImpl implements FormService {
     @Scheduled(cron="0 * 0/5 * * ?")
     public void generateForms(){
         log.info("Generate form job started");
+        // todo dont duplicate
         List<OrganizationTemplate> organizationTemplateList = organizationTemplateRepository.findAll();
         List<Form> forms = organizationTemplateList
             .stream()
@@ -174,5 +178,15 @@ public class FormServiceImpl implements FormService {
             .collect(Collectors.toList());
         log.info("# of form generated: {}", forms.size());
         log.info("Generate form job finished");
+        // todo send notification
+
+    }
+
+    public List<FormDTO> getAllByOrg(Long id){
+        return formRepository.findAllByOrganizationTemplate_Organization_Id(id)
+            .stream()
+            .map(formMapper::toDto)
+            .collect(Collectors.toList());
+
     }
 }

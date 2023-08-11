@@ -32,7 +32,7 @@ public class OrganizationTemplate extends AbstractAuditingEntity<Long> implement
     @OneToOne
     private Template template;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_org_template_location",
         joinColumns = @JoinColumn(name = "org_template_id"),

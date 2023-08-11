@@ -13,6 +13,8 @@ import com.service.mapper.TemplateMapper;
 import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +54,7 @@ public class OrganizationTemplateService {
         }catch (CustomException ex){
             throw ex;
         }
+        //todo throw exception message that cant link location with the same template
         catch (Exception e){
             throw new CustomException("Can not import template!","لا يمكن ربط المنشأة مع النموذج","Cant.import");
         }

@@ -46,7 +46,7 @@ public class Template extends AbstractAuditingEntity<Long> implements Serializab
     @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
     private Category subCategory;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "rel_template__field",
         joinColumns = @JoinColumn(name = "template_id"),

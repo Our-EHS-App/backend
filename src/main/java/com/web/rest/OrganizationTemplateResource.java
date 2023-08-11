@@ -47,6 +47,7 @@ public class OrganizationTemplateResource {
 
     @GetMapping("/get-all-by-org-id/{id}")
     public ResponseEntity<GetAllOrgTemplatesDTO> getAll(@PathVariable Long id){
+        //todo add pagination
         log.debug("REST request to get a page of Organizations");
         GetAllOrgTemplatesDTO dto = organizationTemplateService.getAllByOrgId(id);
         return ResponseEntity.ok().body(dto);

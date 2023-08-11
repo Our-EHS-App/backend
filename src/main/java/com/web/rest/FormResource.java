@@ -29,6 +29,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.domain.Form}.
  */
 @RestController
+//todo add /forms
 @RequestMapping("/api")
 public class FormResource {
 
@@ -194,5 +195,12 @@ public class FormResource {
         log.debug("REST request to submit Form id: {}", values.getFormId());
         formService.submitForm(values);
 
+    }
+
+    @GetMapping("/get-forms-by-org-id/{orgId}")
+    public ResponseEntity<List<FormDTO>> getAllByOrg(@PathVariable Long orgId){
+        log.debug("REST request to get all Forms by orgId: {}", orgId);
+
+        return ResponseEntity.ok().body(formService.getAllByOrg(orgId));
     }
 }

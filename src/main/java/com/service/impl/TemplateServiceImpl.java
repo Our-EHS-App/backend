@@ -49,6 +49,7 @@ public class TemplateServiceImpl implements TemplateService {
     @Override
     public TemplateDTO save(TemplateDTO templateDTO) {
         log.debug("Request to save Template : {}", templateDTO);
+        // todo must have at least 1 fields
         Set<FieldDTO> fieldSet = templateDTO
             .getFields()
             .stream().map(fieldService::save)

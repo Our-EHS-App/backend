@@ -45,6 +45,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDTO save(LocationDTO locationDTO) {
         log.debug("Request to save Location : {}", locationDTO);
+        //todo check if orgId == user_org_id
         Organization organization = organizationService.getById(locationDTO.getOrganizationId());
         Location location = locationMapper.toEntity(locationDTO);
         location.setOrganization(organization);

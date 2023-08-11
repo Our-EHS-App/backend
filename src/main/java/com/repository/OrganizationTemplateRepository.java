@@ -1,7 +1,10 @@
 package com.repository;
 
 import com.domain.OrganizationTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,8 +17,10 @@ import java.util.Optional;
  * For more information refer to https://github.com/jhipster/generator-jhipster/issues/17990.
  */
 @Repository
-public interface OrganizationTemplateRepository extends  JpaRepository<OrganizationTemplate, Long> {
+public interface OrganizationTemplateRepository extends  JpaRepository<OrganizationTemplate, Long>, PagingAndSortingRepository<OrganizationTemplate, Long> {
 
     List<OrganizationTemplate> findAllByOrganization_id(Long id);
     Optional<OrganizationTemplate> findByOrganization_IdAndTemplate_Id(Long orgId, Long tempId);
+
+    Page<OrganizationTemplate> findAllByOrganization_Id(Long od, Pageable pageable);
 }
