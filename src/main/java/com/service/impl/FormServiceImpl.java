@@ -110,7 +110,7 @@ public class FormServiceImpl implements FormService {
         return generateForm(organizationTemplate);
     }
 
-    private List<Form> generateForm(OrganizationTemplate organizationTemplate) {
+    public List<Form> generateForm(OrganizationTemplate organizationTemplate) {
         return organizationTemplate.getLocations()
             .stream().map(location -> {
                 Form form = new Form();
@@ -174,7 +174,7 @@ public class FormServiceImpl implements FormService {
         }
     }
 
-    @Scheduled(cron = "* * 0/5 * * ?")
+    @Scheduled(cron = "@daily")
     public void generateForms() {
         log.info("Generate form job started");
         // todo dont duplicate

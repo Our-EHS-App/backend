@@ -29,7 +29,6 @@ public class OrganizationResource {
     }
 
     @PostMapping("/register")
-    // todo accept anonymous
     public ResponseEntity<OrganizationDTO> register(@RequestBody OrganizationDTO dto){
         log.debug("REST request to register Organization");
         OrganizationDTO result=organizationService.register(dto);

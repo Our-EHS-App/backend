@@ -52,6 +52,7 @@ public class OrganizationTemplateService {
         Template template = templateService.getById(dto.getTemplateId());
         OrganizationTemplate organizationTemplate = new OrganizationTemplate(organization, template, locations);
         organizationTemplateRepository.saveAndFlush(organizationTemplate);
+        formService.generateForm(organizationTemplate);
         }catch (CustomException ex){
             throw ex;
         }
@@ -59,7 +60,6 @@ public class OrganizationTemplateService {
         catch (Exception e){
             throw new CustomException("Can not import template!","لا يمكن ربط المنشأة مع النموذج","Cant.import");
         }
-        //todo generate form then return it
     }
     @Transactional
     public void update(ImportOrgTemplateDTO dto){
