@@ -36,6 +36,19 @@
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
+
+    <changeSet id="20230302161332-2-data" author="jhipster" >
+        <loadData
+            file="config/liquibase/data/form_status2.csv"
+            separator=";"
+            tableName="form_status"
+            usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="name_ar" type="string"/>
+            <column name="name_en" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
 
     <!--

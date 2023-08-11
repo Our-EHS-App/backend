@@ -2,6 +2,8 @@ package com.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,6 +50,10 @@ public class Form extends AbstractAuditingEntity<Long> implements Serializable {
     @JsonIgnoreProperties(value = { "locations", "template", "organization" }, allowSetters = true)
     private OrganizationTemplate organizationTemplate;
 
+    @OneToMany(mappedBy = "form")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<FormValues> formValuesSet = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -57,6 +63,14 @@ public class Form extends AbstractAuditingEntity<Long> implements Serializable {
     public Form id(Long id) {
         this.setId(id);
         return this;
+    }
+
+    public Set<FormValues> getFormValuesSet() {
+        return formValuesSet;
+    }
+
+    public void setFormValuesSet(Set<FormValues> formValuesSet) {
+        this.formValuesSet = formValuesSet;
     }
 
     public void setId(Long id) {

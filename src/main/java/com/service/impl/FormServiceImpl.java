@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.web.rest.errors.CustomException;
+import io.undertow.server.handlers.form.FormData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.config.Constants.NUMBER_REGEX;
+import static com.config.Constants.*;
 
 /**
  * Service Implementation for managing {@link Form}.
@@ -33,7 +34,6 @@ import static com.config.Constants.NUMBER_REGEX;
 public class FormServiceImpl implements FormService {
 
     private final Logger log = LoggerFactory.getLogger(FormServiceImpl.class);
-
     private final FormRepository formRepository;
     private final FieldRepository fieldRepository;
 
@@ -84,14 +84,18 @@ public class FormServiceImpl implements FormService {
     @Transactional(readOnly = true)
     public Page<FormDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Forms");
-        return formRepository.findAll(pageable).map(formMapper::toDto);
+        return formRepository.findAll(pageable).map(formMapper::toDto)
+            .map(this::getValues)
+            ;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<FormDTO> findOne(Long id) {
         log.debug("Request to get Form : {}", id);
-        return formRepository.findById(id).map(formMapper::toDto);
+        return formRepository.findById(id)
+            .map(formMapper::toDto)
+            .map(this::getValues);
     }
 
     @Override
@@ -100,33 +104,33 @@ public class FormServiceImpl implements FormService {
         formRepository.deleteById(id);
     }
 
-    public List<Form> generateForm(Long orgTempId){
+    public List<Form> generateForm(Long orgTempId) {
         OrganizationTemplate organizationTemplate = organizationTemplateRepository.findById(orgTempId)
-            .orElseThrow(() -> new CustomException("Not found!","غير موجود!","not.found"));
+            .orElseThrow(() -> new CustomException("Not found!", "غير موجود!", "not.found"));
         return generateForm(organizationTemplate);
     }
 
-    private List<Form> generateForm(OrganizationTemplate organizationTemplate ){
+    private List<Form> generateForm(OrganizationTemplate organizationTemplate) {
         return organizationTemplate.getLocations()
             .stream().map(location -> {
-        Form form = new Form();
-        form.setTemplate(organizationTemplate.getTemplate());
-        form.setLocation(location);
-        form.setOrganizationTemplate(organizationTemplate);
-        form.setNameAr(organizationTemplate.getTemplate().getTitleAr());
-        form.setNameEn(organizationTemplate.getTemplate().getTitleEn());
-        // todo status enum
-        FormStatus formStatus = new FormStatus();
-        form.setListStatus(formStatus.id(1L));
-        return formRepository.saveAndFlush(form);
+                Form form = new Form();
+                form.setTemplate(organizationTemplate.getTemplate());
+                form.setLocation(location);
+                form.setOrganizationTemplate(organizationTemplate);
+                form.setNameAr(organizationTemplate.getTemplate().getTitleAr());
+                form.setNameEn(organizationTemplate.getTemplate().getTitleEn());
+                // todo status enum
+                FormStatus formStatus = new FormStatus();
+                form.setListStatus(formStatus.id(1L));
+                return formRepository.saveAndFlush(form);
             })
             .collect(Collectors.toList());
     }
 
-    public void submitForm(SubmitFormDTO values){
+    public void submitForm(SubmitFormDTO values) {
         // todo cant submit more than one
-        Form form = formRepository.findById(values.getFormId())
-            .orElseThrow(()->new CustomException("Form not found!","النموذج غير موجود!","not.found"));
+        Form form = formRepository.findByIdAndListStatus_Id(values.getFormId(), 1L) // Active status
+            .orElseThrow(() -> new CustomException("Form not found!", "النموذج غير موجود!", "not.found"));
         // todo find duplicate ids
         List<Long> fieldIds = form.getTemplate()
             .getFields()
@@ -143,31 +147,35 @@ public class FormServiceImpl implements FormService {
         List<FormValues> formValues = values.getValues().stream()
             .map(value -> toEntity(value, form))
             .collect(Collectors.toList());
-        // todo Update form status
-
+        FormStatus formStatus = new FormStatus();
+        form.setListStatus(formStatus.id(4L)); //Submitted status
     }
 
-    private FormValues toEntity(FieldValueDTO value, Form form){
+    private FormValues toEntity(FieldValueDTO value, Form form) {
         Field field = fieldRepository.findById(value.getFieldId())
-            .orElseThrow(()->new CustomException("Field not found!","الخانة غير موجودة!","not.found"));
+            .orElseThrow(() -> new CustomException("Field not found!", "الخانة غير موجودة!", "not.found"));
         validateValue(field, value.getValue());
         FormValues formValues = formValuesRepository.findByFormAndField(form, field)
-            .orElse( new FormValues());
+            .orElse(new FormValues());
         formValues.setForm(form);
         formValues.setField(field);
         formValues.setValue(value.getValue());
         return formValuesRepository.save(formValues);
     }
 
-    private void validateValue(Field field,String value){
-        if(field.getFieldType().getNameEn().equalsIgnoreCase("number")){
+    private void validateValue(Field field, String value) {
+        if (field.getFieldType().getNameEn().equalsIgnoreCase("number")) {
             if (!value.matches(NUMBER_REGEX))
+                throw new CustomException("Invalid value", "القيمة غير صحيحة", "invalid.value");
+        }
+        if (field.getFieldType().getNameEn().equalsIgnoreCase("Checkbox")) {
+            if (!value.matches(CHECKBOX_REGEX))
                 throw new CustomException("Invalid value", "القيمة غير صحيحة", "invalid.value");
         }
     }
 
-    @Scheduled(cron="0 * 0/5 * * ?")
-    public void generateForms(){
+    @Scheduled(cron = "0 * 0/5 * * ?")
+    public void generateForms() {
         log.info("Generate form job started");
         // todo dont duplicate
         List<OrganizationTemplate> organizationTemplateList = organizationTemplateRepository.findAll();
@@ -182,11 +190,22 @@ public class FormServiceImpl implements FormService {
 
     }
 
-    public List<FormDTO> getAllByOrg(Long id){
+    public List<FormDTO> getAllByOrg(Long id) {
         return formRepository.findAllByOrganizationTemplate_Organization_Id(id)
             .stream()
             .map(formMapper::toDto)
+            .map(this::getValues)
             .collect(Collectors.toList());
 
+    }
+
+    private FormDTO getValues(FormDTO dto){
+
+        dto.getTemplate().getFields().forEach(f ->{
+            formValuesRepository
+                .findByForm_idAndField_id(dto.getId(), f.getId())
+                .ifPresent(formValues -> f.setValue(formValues.getValue()));
+        });
+        return dto;
     }
 }

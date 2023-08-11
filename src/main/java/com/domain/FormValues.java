@@ -27,9 +27,9 @@ public class FormValues extends AbstractAuditingEntity<Long> implements Serializ
     @Column(name = "value")
     private String value;
 
-    @OneToOne
+    @ManyToOne
     private Form form;
-    @OneToOne
+    @ManyToOne
     private Field field;
 
 
