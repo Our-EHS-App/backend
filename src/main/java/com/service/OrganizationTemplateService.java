@@ -6,6 +6,7 @@ import com.domain.OrganizationTemplate;
 import com.domain.Template;
 import com.repository.OrganizationTemplateRepository;
 import com.service.dto.*;
+import com.service.impl.FormServiceImpl;
 import com.service.impl.LocationServiceImpl;
 import com.service.impl.TemplateServiceImpl;
 import com.service.mapper.LocationMapper;
@@ -13,8 +14,6 @@ import com.service.mapper.TemplateMapper;
 import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,14 +30,16 @@ public class OrganizationTemplateService {
     private final OrganizationService organizationService;
     private final TemplateServiceImpl templateService;
     private final LocationServiceImpl locationService;
+    private final FormServiceImpl formService;
     private final TemplateMapper templateMapper;
     private final LocationMapper locationMapper;
 
-    public OrganizationTemplateService(OrganizationTemplateRepository organizationTemplateRepository, OrganizationService organizationService, TemplateServiceImpl templateService, LocationServiceImpl locationService, TemplateMapper templateMapper, LocationMapper locationMapper) {
+    public OrganizationTemplateService(OrganizationTemplateRepository organizationTemplateRepository, OrganizationService organizationService, TemplateServiceImpl templateService, LocationServiceImpl locationService, FormServiceImpl formService, TemplateMapper templateMapper, LocationMapper locationMapper) {
         this.organizationTemplateRepository = organizationTemplateRepository;
         this.organizationService = organizationService;
         this.templateService = templateService;
         this.locationService = locationService;
+        this.formService = formService;
         this.templateMapper = templateMapper;
         this.locationMapper = locationMapper;
     }
@@ -97,4 +98,8 @@ public class OrganizationTemplateService {
             .collect(Collectors.toSet());
     }
     //todo add location to OrganizationTemplate
+
+    public FormDTO getLatestByTemplateId(Long templateId){
+        return formService.findLatestByTemplateId(templateId);
+    }
 }

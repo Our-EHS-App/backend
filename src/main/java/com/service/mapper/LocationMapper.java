@@ -15,6 +15,7 @@ import org.mapstruct.*;
 public interface LocationMapper extends EntityMapper<LocationDTO, Location> {
     @Mapping(target = "locationType", source = "locationType", qualifiedByName = "locationTypeId")
     @Mapping(target = "locationStatus", source = "locationStatus", qualifiedByName = "locationStatusId")
+    @Mapping(target = "organizationId", source = "organization.id")
     LocationDTO toDto(Location s);
 
     @Named("locationTypeId")

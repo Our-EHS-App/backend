@@ -174,7 +174,7 @@ public class FormServiceImpl implements FormService {
         }
     }
 
-    @Scheduled(cron = "0 * 0/5 * * ?")
+    @Scheduled(cron = "* * 0/5 * * ?")
     public void generateForms() {
         log.info("Generate form job started");
         // todo dont duplicate
@@ -207,5 +207,12 @@ public class FormServiceImpl implements FormService {
                 .ifPresent(formValues -> f.setValue(formValues.getValue()));
         });
         return dto;
+    }
+
+    public FormDTO findLatestByTemplateId(Long templateId){
+        return formRepository.findFirstByTemplate_idOrderByCreatedDateDesc(templateId)
+            .map(formMapper::toDto)
+            .map(this::getValues)
+            .orElseThrow(() -> new CustomException("Form not found!", "النموذج غير موجود!", "not.found"));
     }
 }

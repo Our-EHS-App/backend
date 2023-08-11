@@ -1,6 +1,7 @@
 package com.web.rest;
 
 import com.service.OrganizationTemplateService;
+import com.service.dto.FormDTO;
 import com.service.dto.GetAllOrgTemplatesDTO;
 import com.service.dto.ImportOrgTemplateDTO;
 import com.service.dto.OrganizationDTO;
@@ -50,6 +51,14 @@ public class OrganizationTemplateResource {
         //todo add pagination
         log.debug("REST request to get a page of Organizations");
         GetAllOrgTemplatesDTO dto = organizationTemplateService.getAllByOrgId(id);
+        return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/get-by-template-id/{id}")
+    public ResponseEntity<FormDTO> getByTemplateId(@PathVariable Long id){
+        //todo add pagination
+        log.debug("REST request to get a Latest form by template id: {}", id);
+        FormDTO dto = organizationTemplateService.getLatestByTemplateId(id);
         return ResponseEntity.ok().body(dto);
     }
 }
