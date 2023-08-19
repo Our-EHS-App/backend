@@ -154,7 +154,7 @@ public class FormServiceImpl implements FormService {
     private FormValues toEntity(FieldValueDTO value, Form form) {
         Field field = fieldRepository.findById(value.getFieldId())
             .orElseThrow(() -> new CustomException("Field not found!", "الخانة غير موجودة!", "not.found"));
-        validateValue(field, value.getValue());
+//        validateValue(field, value.getValue());
         FormValues formValues = formValuesRepository.findByFormAndField(form, field)
             .orElse(new FormValues());
         formValues.setForm(form);
@@ -176,8 +176,9 @@ public class FormServiceImpl implements FormService {
 
     @Scheduled(cron = "@daily")
     public void generateForms() {
-        log.info("Generate form job started");
-        // todo dont duplicate
+        log.info("Generate forms job started");
+        // todo Don't duplicate, Generate if latest form submitted or expired
+        // todo Check frequency
         List<OrganizationTemplate> organizationTemplateList = organizationTemplateRepository.findAll();
         List<Form> forms = organizationTemplateList
             .stream()

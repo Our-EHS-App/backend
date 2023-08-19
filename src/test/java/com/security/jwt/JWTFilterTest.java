@@ -3,6 +3,7 @@ package com.security.jwt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.SecurityMetersService;
+import com.repository.UserRepository;
 import com.security.AuthoritiesConstants;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -25,6 +26,7 @@ class JWTFilterTest {
     private TokenProvider tokenProvider;
 
     private JWTFilter jwtFilter;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -34,7 +36,7 @@ class JWTFilterTest {
 
         SecurityMetersService securityMetersService = new SecurityMetersService(new SimpleMeterRegistry());
 
-        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService);
+        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService, userRepository);
         ReflectionTestUtils.setField(tokenProvider, "key", Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret)));
 
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", 60000);

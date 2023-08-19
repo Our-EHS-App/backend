@@ -1,6 +1,8 @@
 package com.security.jwt;
 
 import com.management.SecurityMetersService;
+import com.repository.UserRepository;
+import com.web.rest.errors.CustomException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -38,8 +40,10 @@ public class TokenProvider {
     private final long tokenValidityInMillisecondsForRememberMe;
 
     private final SecurityMetersService securityMetersService;
+    private final UserRepository userRepository;
 
-    public TokenProvider(JHipsterProperties jHipsterProperties, SecurityMetersService securityMetersService) {
+    public TokenProvider(JHipsterProperties jHipsterProperties, SecurityMetersService securityMetersService, UserRepository userRepository) {
+        this.userRepository = userRepository;
         byte[] keyBytes;
         String secret = jHipsterProperties.getSecurity().getAuthentication().getJwt().getBase64Secret();
         if (!ObjectUtils.isEmpty(secret)) {
@@ -65,6 +69,9 @@ public class TokenProvider {
     public String createToken(Authentication authentication, boolean rememberMe) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
+        com.domain.User user = userRepository.findOneByLogin(authentication.getName())
+            .orElseThrow(() -> new CustomException("Not found!","غير موجود!","not.found"));
+        Long orgId = Objects.isNull(user.getOrganization()) ? null: user.getOrganization().getId();
         long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {
@@ -77,6 +84,7 @@ public class TokenProvider {
             .builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .claim("OrgId", orgId)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();

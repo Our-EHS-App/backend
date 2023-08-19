@@ -5,6 +5,7 @@ import com.repository.FormRepository;
 import com.service.FormService;
 import com.service.dto.FormDTO;
 import com.service.dto.SubmitFormDTO;
+import com.service.util.TokenUtils;
 import com.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,6 +26,8 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * REST controller for managing {@link com.domain.Form}.
  */
@@ -43,10 +46,13 @@ public class FormResource {
     private final FormService formService;
 
     private final FormRepository formRepository;
+    private final TokenUtils tokenUtils;
 
-    public FormResource(FormService formService, FormRepository formRepository) {
+
+    public FormResource(FormService formService, FormRepository formRepository, TokenUtils tokenUtils) {
         this.formService = formService;
         this.formRepository = formRepository;
+        this.tokenUtils = tokenUtils;
     }
 
     /**
@@ -197,10 +203,11 @@ public class FormResource {
 
     }
 
-    @GetMapping("/get-forms-by-org-id/{orgId}")
-    public ResponseEntity<List<FormDTO>> getAllByOrg(@PathVariable Long orgId){
-        log.debug("REST request to get all Forms by orgId: {}", orgId);
+    @GetMapping("/get-my-forms")
+    public ResponseEntity<List<FormDTO>> getAllByOrg(HttpServletRequest request){
+        log.debug("REST request to get all my Forms");
 
-        return ResponseEntity.ok().body(formService.getAllByOrg(orgId));
+        String orgId = tokenUtils.getOrgId(request);
+        return ResponseEntity.ok().body(formService.getAllByOrg(Long.valueOf(orgId)));
     }
 }

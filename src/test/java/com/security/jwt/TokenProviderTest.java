@@ -3,6 +3,7 @@ package com.security.jwt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.SecurityMetersService;
+import com.repository.UserRepository;
 import com.security.AuthoritiesConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +28,7 @@ class TokenProviderTest {
 
     private Key key;
     private TokenProvider tokenProvider;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -36,7 +38,7 @@ class TokenProviderTest {
 
         SecurityMetersService securityMetersService = new SecurityMetersService(new SimpleMeterRegistry());
 
-        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService);
+        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService, userRepository);
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret));
 
         ReflectionTestUtils.setField(tokenProvider, "key", key);
@@ -96,7 +98,7 @@ class TokenProviderTest {
 
         SecurityMetersService securityMetersService = new SecurityMetersService(new SimpleMeterRegistry());
 
-        TokenProvider tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService);
+        TokenProvider tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService, userRepository);
 
         Key key = (Key) ReflectionTestUtils.getField(tokenProvider, "key");
         assertThat(key).isNotNull().isEqualTo(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)));
@@ -110,7 +112,7 @@ class TokenProviderTest {
 
         SecurityMetersService securityMetersService = new SecurityMetersService(new SimpleMeterRegistry());
 
-        TokenProvider tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService);
+        TokenProvider tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService, userRepository);
 
         Key key = (Key) ReflectionTestUtils.getField(tokenProvider, "key");
         assertThat(key).isNotNull().isEqualTo(Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret)));

@@ -3,6 +3,7 @@ package com.security.jwt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.management.SecurityMetersService;
+import com.repository.UserRepository;
 import com.security.AuthoritiesConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,6 +33,7 @@ class TokenProviderSecurityMetersTests {
     private MeterRegistry meterRegistry;
 
     private TokenProvider tokenProvider;
+    private UserRepository userRepository;
 
     @BeforeEach
     public void setup() {
@@ -43,7 +45,7 @@ class TokenProviderSecurityMetersTests {
 
         SecurityMetersService securityMetersService = new SecurityMetersService(meterRegistry);
 
-        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService);
+        tokenProvider = new TokenProvider(jHipsterProperties, securityMetersService, userRepository);
         Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(base64Secret));
 
         ReflectionTestUtils.setField(tokenProvider, "key", key);
