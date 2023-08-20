@@ -2,16 +2,16 @@ package com.service.dto;
 
 public class CategoryDetailsDashboardDTO {
     private CategoryDTO categoryDTO;
-    private Long formCount;
+    private Long percentage;
 
 
 
-    public Long getFormCount() {
-        return formCount;
+    public Long getPercentage() {
+        return percentage;
     }
 
-    public void setFormCount(Long formCount) {
-        this.formCount = formCount;
+    public void setPercentage(Long percentage) {
+        this.percentage = percentage;
     }
 
     public CategoryDTO getCategoryDTO() {
