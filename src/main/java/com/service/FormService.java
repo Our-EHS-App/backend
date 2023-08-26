@@ -5,6 +5,7 @@ import com.service.dto.FormDTO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import com.service.dto.SubmitFormDTO;
 import org.springframework.data.domain.Page;
@@ -61,7 +62,7 @@ public interface FormService {
      */
     void delete(Long id);
 
-    List<Form> generateForm(Long orgTempId);
+    List<Form> generateForm(Long orgTempId) throws ExecutionException, InterruptedException;
     void submitForm(SubmitFormDTO values);
     List<FormDTO> getAllByOrg(Long orgId);
 }

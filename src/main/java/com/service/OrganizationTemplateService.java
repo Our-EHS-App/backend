@@ -58,7 +58,7 @@ public class OrganizationTemplateService {
         }
         //todo throw exception message that cant link location with the same template
         catch (Exception e){
-            throw new CustomException("Can not import template!","لا يمكن ربط المنشأة مع النموذج","Cant.import");
+            throw new CustomException("Can not import template!","لا يمكن ربط النموذج مع المنشأة","Cant.import");
         }
     }
     @Transactional

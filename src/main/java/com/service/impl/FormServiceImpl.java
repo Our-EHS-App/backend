@@ -12,6 +12,8 @@ import com.service.dto.SubmitFormDTO;
 import com.service.mapper.FormMapper;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import com.web.rest.errors.CustomException;
@@ -20,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -104,14 +108,18 @@ public class FormServiceImpl implements FormService {
         formRepository.deleteById(id);
     }
 
-    public List<Form> generateForm(Long orgTempId) {
+    public List<Form> generateForm(Long orgTempId) throws ExecutionException, InterruptedException {
         OrganizationTemplate organizationTemplate = organizationTemplateRepository.findById(orgTempId)
             .orElseThrow(() -> new CustomException("Not found!", "غير موجود!", "not.found"));
-        return generateForm(organizationTemplate);
+        Future<List<Form>> futureForms = generateForm(organizationTemplate);
+        return futureForms.get();
     }
 
-    public List<Form> generateForm(OrganizationTemplate organizationTemplate) {
-        return organizationTemplate.getLocations()
+    @Async
+    public Future<List<Form>> generateForm(OrganizationTemplate organizationTemplate) {
+        String currentThread = Thread.currentThread().getName();
+        log.debug("Start generating form asynchronously! for template => {}, Thread => {}", organizationTemplate.getTemplate().getId(), currentThread);
+        return new AsyncResult<>(organizationTemplate.getLocations()
             .stream().map(location -> {
                 Form form = new Form();
                 form.setTemplate(organizationTemplate.getTemplate());
@@ -122,9 +130,10 @@ public class FormServiceImpl implements FormService {
                 // todo status enum
                 FormStatus formStatus = new FormStatus();
                 form.setListStatus(formStatus.id(1L));
+                log.debug("Finish generating form asynchronously! for template => {}, Thread => {}", organizationTemplate.getTemplate().getId(), currentThread);
                 return formRepository.saveAndFlush(form);
             })
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     public void submitForm(SubmitFormDTO values) {
@@ -174,22 +183,6 @@ public class FormServiceImpl implements FormService {
         }
     }
 
-    @Scheduled(cron = "@daily")
-    public void generateForms() {
-        log.info("Generate forms job started");
-        // todo Don't duplicate, Generate if latest form submitted or expired
-        // todo Check frequency
-        List<OrganizationTemplate> organizationTemplateList = organizationTemplateRepository.findAll();
-        List<Form> forms = organizationTemplateList
-            .stream()
-            .map(this::generateForm)
-            .flatMap(java.util.Collection::stream)
-            .collect(Collectors.toList());
-        log.info("# of form generated: {}", forms.size());
-        log.info("Generate form job finished");
-        // todo send notification
-
-    }
 
     public List<FormDTO> getAllByOrg(Long id) {
         return formRepository.findAllByOrganizationTemplate_Organization_Id(id)

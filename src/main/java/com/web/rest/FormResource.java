@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,7 +188,7 @@ public class FormResource {
     }
 
     @PostMapping("/generate-form/{id}")
-    public ResponseEntity<List<Form>> generateForm(@PathVariable("id") Long orgTempId){
+    public ResponseEntity<List<Form>> generateForm(@PathVariable("id") Long orgTempId) throws ExecutionException, InterruptedException {
         log.debug("REST request to generate Form from OrganizationTemplate id: {}", orgTempId);
         Optional<List<Form>> result = Optional.ofNullable(formService.generateForm(orgTempId));
         return ResponseUtil.wrapOrNotFound(
