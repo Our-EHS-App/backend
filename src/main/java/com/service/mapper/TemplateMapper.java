@@ -24,6 +24,7 @@ public interface TemplateMapper extends EntityMapper<TemplateDTO, Template> {
     TemplateDTO toDto(Template s);
 
     @Mapping(target = "removeField", ignore = true)
+    @Mapping(target = "frequency", source = "frequency", defaultValue = "1")
     Template toEntity(TemplateDTO templateDTO);
 
     @Named("templateTypeId")
