@@ -10,6 +10,7 @@ import com.web.rest.errors.CustomException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +40,10 @@ private final TokenUtils tokenUtils;
                  for(CategoryDashboardDTO submittedDto : submittedDtos){
                      if(i.getCategoryId().equals(submittedDto.getCategoryId())) {
                          submittedDto.getCategoryId().equals(i.getCategoryId());
-                         Float percentage = submittedDto.getFormCount().floatValue() / i.getFormCount().floatValue() * 100;
-                         i.setPercentage(percentage.longValue());
+                         Double percentage = submittedDto.getFormCount().doubleValue() / i.getFormCount().doubleValue() * 100;
+                         i.setPercentage(percentage);
                      }else{
-                         i.setPercentage(0L);
+                         i.setPercentage(0D);
                      }
 
                  }
@@ -56,7 +57,8 @@ private final TokenUtils tokenUtils;
         CategoryDetailsDashboardDTO detailsDashboardDTO = new CategoryDetailsDashboardDTO();
         detailsDashboardDTO.setCategoryDTO(categoryRepository.findById(dto.getCategoryId()).map(categoryMapper::toDto)
             .orElseThrow(() -> new CustomException("Not found!","غير موجود!","not.found")));
-        detailsDashboardDTO.setPercentage(dto.getPercentage());
+        DecimalFormat df = new DecimalFormat("0.00");
+        detailsDashboardDTO.setPercentage(df.format(dto.getPercentage()));
         return detailsDashboardDTO;
     }
 

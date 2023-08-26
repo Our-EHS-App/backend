@@ -4,7 +4,7 @@ public class CategoryDashboardDTO {
     private Long categoryId;
     private Long formCount;
 
-    private Long percentage;
+    private Double percentage;
 
     public CategoryDashboardDTO(Long categoryId, Long formCount) {
         this.categoryId = categoryId;
@@ -31,11 +31,11 @@ public class CategoryDashboardDTO {
         return categoryId;
     }
 
-    public Long getPercentage() {
+    public Double getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Long percentage) {
+    public void setPercentage(Double percentage) {
         this.percentage = percentage;
     }
 }

@@ -2,15 +2,15 @@ package com.service.dto;
 
 public class CategoryDetailsDashboardDTO {
     private CategoryDTO categoryDTO;
-    private Long percentage;
+    private String percentage;
 
 
 
-    public Long getPercentage() {
+    public String getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(Long percentage) {
+    public void setPercentage(String percentage) {
         this.percentage = percentage;
     }
 
