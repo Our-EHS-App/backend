@@ -1,6 +1,7 @@
 package com.service.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,16 @@ public class FormDTO implements Serializable {
     private FormStatusDTO listStatus;
 
     private TemplateDTO template;
+
+    private Instant createdDate;
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Long getId() {
         return id;

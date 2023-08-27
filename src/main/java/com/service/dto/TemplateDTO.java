@@ -1,6 +1,7 @@
 package com.service.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,7 +24,17 @@ public class TemplateDTO implements Serializable {
 
     private CategoryDTO subCategory;
 
+
     private Set<FieldDTO> fields = new HashSet<>();
+    private Instant createdDate;
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Long getId() {
         return id;

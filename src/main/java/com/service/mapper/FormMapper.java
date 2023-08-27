@@ -15,6 +15,7 @@ import org.mapstruct.*;
 public interface FormMapper extends EntityMapper<FormDTO, Form> {
     @Mapping(target = "listStatus", source = "listStatus", qualifiedByName = "formStatusId")
     @Mapping(target = "template", source = "template", qualifiedByName = "templateId")
+    @Mapping(target = "createdDate", source = "createdDate")
     FormDTO toDto(Form s);
 
     @Named("formStatusId")
