@@ -3,6 +3,7 @@ package com.web.rest;
 import com.service.DashboardService;
 import com.service.dto.CategoryDetailsDashboardDTO;
 import com.service.dto.LocationDashboardDTO;
+import com.service.dto.LocationFormDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +32,8 @@ public class DashboardResource {
     }
 
     @GetMapping("/by-location")
-    public LocationDashboardDTO byLocation(){
-        LocationDashboardDTO dto = new LocationDashboardDTO();
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("New", 12);
-        map.put("Submitted", 20);
-        map.put("Expired", 12);
-        dto.setCounts(map);
+    public List<LocationDashboardDTO> byLocation(HttpServletRequest request){
 
-        return dto;
+        return dashboardService.locationDashboard(request);
     }
 }

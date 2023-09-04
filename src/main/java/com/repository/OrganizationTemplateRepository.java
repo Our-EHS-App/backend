@@ -1,6 +1,5 @@
 package com.repository;
 
-import com.domain.Location;
 import com.domain.Organization;
 import com.domain.OrganizationTemplate;
 import com.domain.Template;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Spring Data JPA repository for the Template entity.
@@ -25,7 +23,7 @@ public interface OrganizationTemplateRepository extends  JpaRepository<Organizat
 
     List<OrganizationTemplate> findAllByOrganization_id(Long id);
     Optional<OrganizationTemplate> findByOrganization_IdAndTemplate_Id(Long orgId, Long tempId);
-    Optional<OrganizationTemplate> findByOrganizationAndTemplateAndLocationsIn(Organization organization, Template template, Set<Location> locationSet);
+    Optional<OrganizationTemplate> findByOrganizationAndTemplate(Organization organization, Template template);
 
     Page<OrganizationTemplate> findAllByOrganization_Id(Long od, Pageable pageable);
 }

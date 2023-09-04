@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -55,7 +57,7 @@ public class OrganizationTemplateService {
             Set<Location> locations = checkLocationBelongToOrg(dto);
             Organization organization = organizationService.getById(dto.getOrgId());
             Template template = templateService.getById(dto.getTemplateId());
-            OrganizationTemplate organizationTemplate = new OrganizationTemplate(organization, template, locations);
+            OrganizationTemplate organizationTemplate = getOrCreate(organization, template, locations);
             organizationTemplateRepository.saveAndFlush(organizationTemplate);
             formService.generateForm(organizationTemplate);
         } catch (CustomException ex) {
@@ -68,11 +70,11 @@ public class OrganizationTemplateService {
     }
 
     private OrganizationTemplate getOrCreate(Organization organization, Template template, Set<Location> locations) {
-        OrganizationTemplate organizationTemplate = organizationTemplateRepository
-            .findByOrganizationAndTemplateAndLocationsIn(organization, template, locations)
-            .orElse(new OrganizationTemplate(organization, template, locations));
-        organizationTemplate.addLocations(locations);
-        return organizationTemplate;
+        Optional<OrganizationTemplate> organizationTemplate = organizationTemplateRepository
+            .findByOrganizationAndTemplate(organization, template);
+        organizationTemplate.ifPresent(ot -> ot.addLocations(locations));
+
+        return organizationTemplate.orElseGet(() -> new OrganizationTemplate(organization, template, locations));
     }
 
     @Transactional

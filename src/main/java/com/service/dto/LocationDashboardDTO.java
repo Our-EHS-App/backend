@@ -1,5 +1,8 @@
 package com.service.dto;
 
+import com.domain.Location;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class LocationDashboardDTO {
@@ -7,7 +10,18 @@ public class LocationDashboardDTO {
 
     private String nameAr;
 
-    private String nameEn;    private Map<String,Integer> counts;
+    private String nameEn;
+    private Map<String, Integer> counts;
+
+    public LocationDashboardDTO(Location location) {
+        this.id = location.getId();
+        this.nameAr = location.getNameAr();
+        this.nameEn = location.getNameEn();
+        this.counts = new HashMap<>();
+    }
+
+    public LocationDashboardDTO() {
+    }
 
     public Long getId() {
         return id;

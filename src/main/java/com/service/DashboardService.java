@@ -8,6 +8,8 @@ import com.repository.LocationRepository;
 import com.repository.OrganizationTemplateRepository;
 import com.service.dto.CategoryDashboardDTO;
 import com.service.dto.CategoryDetailsDashboardDTO;
+import com.service.dto.LocationDashboardDTO;
+import com.service.dto.LocationFormDTO;
 import com.service.mapper.CategoryMapper;
 import com.service.util.TokenUtils;
 import com.web.rest.errors.CustomException;
@@ -15,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,10 +73,36 @@ public class DashboardService {
         return detailsDashboardDTO;
     }
 
-    public void locationDashboard(HttpServletRequest request){
-        List<Form> forms = formRepository.findAllByOrganization_Id(Long.valueOf(tokenUtils.getOrgId(request)));
+    public List<LocationDashboardDTO> locationDashboard(HttpServletRequest request){
+        List<LocationFormDTO> dtos = formRepository.getLocationsDashboard(Long.valueOf(tokenUtils.getOrgId(request)));
 
+        return toLocationDashboardDTO(dtos);
 
+    }
+
+    private List<LocationDashboardDTO> toLocationDashboardDTO(List<LocationFormDTO> locationFormDTOS){
+        List<LocationDashboardDTO> dtos = new ArrayList<>();
+        for(LocationFormDTO lf : locationFormDTOS){
+            if(dtos.stream().noneMatch(d -> d.getId().equals(lf.getLocation().getId()))){
+                LocationDashboardDTO dto = new LocationDashboardDTO(lf.getLocation());
+                dtos.add(dto);
+            }
+        }
+
+        dtos.forEach(dto -> {
+                locationFormDTOS
+                    .stream()
+                    .filter(d -> d.getLocation().getId().equals(dto.getId()))
+                    .forEach(m-> dto.getCounts().put(getStatus(m.getListStatusId()), Math.toIntExact(m.getCount())));
+            });
+        return dtos;
+    }
+
+    private String getStatus(Long statusId){
+          Optional<FormStatusEnum> statusEnum=Arrays.stream(FormStatusEnum.values())
+            .filter(e-> e.id.equals(statusId)).findFirst();
+
+        return statusEnum.map(Enum::name).orElse("");
     }
 
 
