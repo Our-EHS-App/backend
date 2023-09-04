@@ -29,9 +29,9 @@ public class OrganizationTemplateResource {
 
 
     @PostMapping("/import")
-    public void register(@RequestBody ImportOrgTemplateDTO dto){
+    public void register(@RequestBody ImportOrgTemplateDTO dto, HttpServletRequest request){
         log.debug("REST request to register Organization");
-        organizationTemplateService.importTemplateToOrg(dto);
+        organizationTemplateService.importTemplateToOrg(dto, request);
 
     }
 

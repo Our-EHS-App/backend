@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Service Interface for managing {@link com.domain.Location}.
  */
@@ -13,9 +15,10 @@ public interface LocationService {
      * Save a location.
      *
      * @param locationDTO the entity to save.
+     * @param request
      * @return the persisted entity.
      */
-    LocationDTO save(LocationDTO locationDTO);
+    LocationDTO save(LocationDTO locationDTO, HttpServletRequest request);
 
     /**
      * Updates a location.

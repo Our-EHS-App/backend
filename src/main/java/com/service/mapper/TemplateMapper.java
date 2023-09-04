@@ -18,7 +18,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface TemplateMapper extends EntityMapper<TemplateDTO, Template> {
     @Mapping(target = "templateType", source = "templateType", qualifiedByName = "templateTypeId")
-    @Mapping(target = "subCategory", source = "subCategory", qualifiedByName = "categoryId")
+    @Mapping(target = "subCategory", source = "subCategory")
     @Mapping(target = "fields", source = "fields", qualifiedByName = "fieldIdSet")
     @Mapping(target = "createdDate", source = "createdDate")
 //    @Mapping(target = "fields", ignore = true)

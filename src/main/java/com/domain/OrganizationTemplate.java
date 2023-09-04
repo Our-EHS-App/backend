@@ -90,6 +90,9 @@ public class OrganizationTemplate extends AbstractAuditingEntity<Long> implement
     public void setLocations(Set<Location> locations) {
         this.locations = locations;
     }
+    public void addLocations(Set<Location> locations) {
+        this.locations.addAll(locations);
+    }
 
 // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

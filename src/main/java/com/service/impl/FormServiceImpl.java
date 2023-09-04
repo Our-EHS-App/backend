@@ -143,6 +143,7 @@ public class FormServiceImpl implements FormService {
                 // todo status enum
                 FormStatus formStatus = new FormStatus();
                 form.setListStatus(formStatus.id(1L));
+                form.setOrganization(organizationTemplate.getOrganization());
                 log.debug("Finish generating form asynchronously! for template => {}, Thread => {}", organizationTemplate.getTemplate().getId(), currentThread);
                 return formRepository.saveAndFlush(form);
             })

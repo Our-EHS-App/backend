@@ -42,7 +42,7 @@ public class Template extends AbstractAuditingEntity<Long> implements Serializab
     @ManyToOne
     private TemplateType templateType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "parent" }, allowSetters = true)
     private Category subCategory;
 
