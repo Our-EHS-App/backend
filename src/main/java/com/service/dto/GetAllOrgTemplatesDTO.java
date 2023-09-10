@@ -5,10 +5,19 @@ import java.util.List;
 public class GetAllOrgTemplatesDTO {
     private OrganizationDTO organizationDTO;
     private List<TemplateLocationsDTO> templateLocationsDTOS;
+    private Long total;
 
     public GetAllOrgTemplatesDTO(OrganizationDTO organizationDTO, List<TemplateLocationsDTO> templateLocationsDTOS) {
         this.organizationDTO = organizationDTO;
         this.templateLocationsDTOS = templateLocationsDTOS;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
     public GetAllOrgTemplatesDTO() {

@@ -21,7 +21,7 @@ import java.util.Optional;
 @Repository
 public interface OrganizationTemplateRepository extends  JpaRepository<OrganizationTemplate, Long>, PagingAndSortingRepository<OrganizationTemplate, Long> {
 
-    List<OrganizationTemplate> findAllByOrganization_id(Long id);
+    Page<OrganizationTemplate> findAllByOrganization_id(Long id, Pageable pageable);
     Optional<OrganizationTemplate> findByOrganization_IdAndTemplate_Id(Long orgId, Long tempId);
     Optional<OrganizationTemplate> findByOrganizationAndTemplate(Organization organization, Template template);
 

@@ -198,8 +198,8 @@ public class FormServiceImpl implements FormService {
     }
 
 
-    public List<FormDTO> getAllByOrg(Long id) {
-        return formRepository.findAllByOrganizationTemplate_Organization_Id(id)
+    public List<FormDTO> getAllByOrg(Long id, Pageable pageable) {
+        return formRepository.findAllByOrganizationTemplate_Organization_Id(id, pageable)
             .stream()
             .map(formMapper::toDto)
             .map(this::getValues)

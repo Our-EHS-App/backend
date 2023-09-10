@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -205,10 +206,10 @@ public class FormResource {
     }
 
     @GetMapping("/get-my-forms")
-    public ResponseEntity<List<FormDTO>> getAllByOrg(HttpServletRequest request){
+    public ResponseEntity<List<FormDTO>> getAllByOrg(@ParameterObject Pageable pageable, HttpServletRequest request){
         log.debug("REST request to get all my Forms");
 
         String orgId = tokenUtils.getOrgId(request);
-        return ResponseEntity.ok().body(formService.getAllByOrg(Long.valueOf(orgId)));
+        return ResponseEntity.ok().body(formService.getAllByOrg(Long.valueOf(orgId), pageable));
     }
 }

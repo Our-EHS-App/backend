@@ -7,6 +7,8 @@ import com.service.dto.ImportOrgTemplateDTO;
 import com.service.util.TokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,11 +45,11 @@ public class OrganizationTemplateResource {
 
 
     @GetMapping("/get-my_templates")
-    public ResponseEntity<GetAllOrgTemplatesDTO> getAll(HttpServletRequest request){
+    public ResponseEntity<GetAllOrgTemplatesDTO> getAll(@ParameterObject Pageable pageable, HttpServletRequest request){
         //todo add pagination
         log.debug("REST request to get a page of Organizations");
         String orgId = tokenUtils.getOrgId(request);
-        GetAllOrgTemplatesDTO dto = organizationTemplateService.getAllByOrgId(Long.parseLong(orgId));
+        GetAllOrgTemplatesDTO dto = organizationTemplateService.getAllByOrgId(Long.parseLong(orgId), pageable);
         return ResponseEntity.ok().body(dto);
     }
 

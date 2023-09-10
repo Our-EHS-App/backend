@@ -15,6 +15,9 @@ import com.service.util.TokenUtils;
 import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,8 +89,8 @@ public class OrganizationTemplateService {
         organizationTemplateRepository.saveAndFlush(organizationTemplate);
     }
 
-    public GetAllOrgTemplatesDTO getAllByOrgId(Long id) {
-        List<OrganizationTemplate> list = organizationTemplateRepository.findAllByOrganization_id(id);
+    public GetAllOrgTemplatesDTO getAllByOrgId(Long id, Pageable pageable) {
+        Page<OrganizationTemplate> list = organizationTemplateRepository.findAllByOrganization_id(id, pageable);
         GetAllOrgTemplatesDTO dto = new GetAllOrgTemplatesDTO();
         List<TemplateLocationsDTO> templateLocationsDTOS = list.stream()
             .map(i -> {
@@ -102,6 +105,7 @@ public class OrganizationTemplateService {
             .collect(Collectors.toList());
         dto.setTemplateLocationsDTOS(templateLocationsDTOS);
         dto.setOrganizationDTO(organizationService.getByIdToDto(id));
+        dto.setTotal(list.getTotalElements());
 
         return dto;
     }
