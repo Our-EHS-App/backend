@@ -144,7 +144,7 @@ public class TemplateResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of templates in body.
      */
     @GetMapping("/templates")
-    public ResponseEntity<List<TemplateDTO>> getAllTemplates(
+    public ResponseEntity<Page<TemplateDTO>> getAllTemplates(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
     ) {
@@ -156,7 +156,7 @@ public class TemplateResource {
             page = templateService.findAll(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().headers(headers).body(page);
     }
 
     /**

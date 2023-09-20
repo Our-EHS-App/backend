@@ -25,6 +25,7 @@ import io.undertow.server.handlers.form.FormData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -124,10 +125,10 @@ public class FormServiceImpl implements FormService {
         String currentThread = Thread.currentThread().getName();
         Optional<Form> latestForm = formRepository
             .findFirstByTemplate_idOrderByCreatedDateDesc(organizationTemplate.getTemplate().getId());
-        if(latestForm.isPresent()){
+        if (latestForm.isPresent()) {
             Period period = Period.between(LocalDate.ofInstant(latestForm.get().getCreatedDate(), ZoneOffset.UTC), LocalDate.ofInstant(Instant.now(), ZoneOffset.UTC));
-            if(period.getDays() < Integer.parseInt(organizationTemplate.getTemplate().getFrequency())){
-            log.error("Frequency not exceeded");
+            if (period.getDays() < Integer.parseInt(organizationTemplate.getTemplate().getFrequency())) {
+                log.error("Frequency not exceeded");
             }
         }
 
@@ -198,18 +199,18 @@ public class FormServiceImpl implements FormService {
     }
 
 
-    public List<FormDTO> getAllByOrg(Long id, Pageable pageable) {
-        return formRepository.findAllByOrganizationTemplate_Organization_Id(id, pageable)
-            .stream()
+    public Page<FormDTO> getAllByOrg(Long id, Pageable pageable) {
+        Page<Form> formPage = formRepository.findAllByOrganizationTemplate_Organization_Id(id, pageable);
+        List<FormDTO> dtos = formPage.stream()
             .map(formMapper::toDto)
             .map(this::getValues)
             .collect(Collectors.toList());
-
+        return new PageImpl<>(dtos,pageable, formPage.getTotalPages());
     }
 
-    private FormDTO getValues(FormDTO dto){
+    private FormDTO getValues(FormDTO dto) {
 
-        dto.getTemplate().getFields().forEach(f ->{
+        dto.getTemplate().getFields().forEach(f -> {
             formValuesRepository
                 .findByForm_idAndField_id(dto.getId(), f.getId())
                 .ifPresent(formValues -> f.setValue(formValues.getValue()));
@@ -217,7 +218,7 @@ public class FormServiceImpl implements FormService {
         return dto;
     }
 
-    public FormDTO findLatestByTemplateId(Long templateId){
+    public FormDTO findLatestByTemplateId(Long templateId) {
         return formRepository.findFirstByTemplate_idOrderByCreatedDateDesc(templateId)
             .map(formMapper::toDto)
             .map(this::getValues)

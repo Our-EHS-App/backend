@@ -64,5 +64,5 @@ public interface FormService {
 
     List<Form> generateForm(Long orgTempId) throws ExecutionException, InterruptedException;
     void submitForm(SubmitFormDTO values);
-    List<FormDTO> getAllByOrg(Long orgId, Pageable pageable);
+    Page<FormDTO> getAllByOrg(Long orgId, Pageable pageable);
 }

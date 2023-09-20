@@ -206,7 +206,7 @@ public class FormResource {
     }
 
     @GetMapping("/get-my-forms")
-    public ResponseEntity<List<FormDTO>> getAllByOrg(@ParameterObject Pageable pageable, HttpServletRequest request){
+    public ResponseEntity<Page<FormDTO>> getAllByOrg(@ParameterObject Pageable pageable, HttpServletRequest request){
         log.debug("REST request to get all my Forms");
 
         String orgId = tokenUtils.getOrgId(request);

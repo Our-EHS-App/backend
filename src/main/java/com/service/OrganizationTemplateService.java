@@ -16,6 +16,7 @@ import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,8 @@ public class OrganizationTemplateService {
                 return new TemplateLocationsDTO(templateDTO, locationDTO);
             })
             .collect(Collectors.toList());
-        dto.setTemplateLocationsDTOS(templateLocationsDTOS);
+        Page<TemplateLocationsDTO> templateLocationsDTOPage = new PageImpl<>(templateLocationsDTOS, pageable, list.getTotalPages());
+        dto.setTemplateLocationsDTOS(templateLocationsDTOPage);
         dto.setOrganizationDTO(organizationService.getByIdToDto(id));
         dto.setTotal(list.getTotalElements());
 
