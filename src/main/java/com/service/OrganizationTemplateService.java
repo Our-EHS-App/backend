@@ -104,7 +104,7 @@ public class OrganizationTemplateService {
                 return new TemplateLocationsDTO(templateDTO, locationDTO);
             })
             .collect(Collectors.toList());
-        Page<TemplateLocationsDTO> templateLocationsDTOPage = new PageImpl<>(templateLocationsDTOS, pageable, list.getTotalPages());
+        Page<TemplateLocationsDTO> templateLocationsDTOPage = new PageImpl<>(templateLocationsDTOS, pageable, list.getTotalElements());
         dto.setTemplateLocationsDTOS(templateLocationsDTOPage);
         dto.setOrganizationDTO(organizationService.getByIdToDto(id));
         dto.setTotal(list.getTotalElements());

@@ -205,7 +205,7 @@ public class FormServiceImpl implements FormService {
             .map(formMapper::toDto)
             .map(this::getValues)
             .collect(Collectors.toList());
-        return new PageImpl<>(dtos,pageable, formPage.getTotalPages());
+        return new PageImpl<>(dtos,pageable, formPage.getTotalElements());
     }
 
     private FormDTO getValues(FormDTO dto) {
