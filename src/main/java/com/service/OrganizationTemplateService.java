@@ -56,6 +56,7 @@ public class OrganizationTemplateService {
 
     @Transactional
     public void importTemplateToOrg(ImportOrgTemplateDTO dto, HttpServletRequest request) {
+        checkInput(dto);
         try {
             dto.setOrgId(Long.valueOf(tokenUtils.getOrgId(request)));
             Set<Location> locations = checkLocationBelongToOrg(dto);
@@ -71,6 +72,14 @@ public class OrganizationTemplateService {
         catch (Exception e) {
             throw new CustomException("Can not import template!", "لا يمكن ربط النموذج مع المنشأة", "Cant.import");
         }
+    }
+
+    private void checkInput(ImportOrgTemplateDTO dto){
+        if(Objects.isNull(dto.getTemplateId()))
+            throw new CustomException("Please select a template!", "يرجى اختيار نموذج", "Cant.import");
+        if(dto.getLocationIds().isEmpty())
+            throw new CustomException("Please add a location!", "يرجى إضافة موقع", "Cant.import");
+
     }
 
     private OrganizationTemplate getOrCreate(Organization organization, Template template, Set<Location> locations) {

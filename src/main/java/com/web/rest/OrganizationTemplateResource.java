@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -31,7 +32,7 @@ public class OrganizationTemplateResource {
 
 
     @PostMapping("/import")
-    public void register(@RequestBody ImportOrgTemplateDTO dto, HttpServletRequest request){
+    public void register(@RequestBody @Valid ImportOrgTemplateDTO dto, HttpServletRequest request){
         log.debug("REST request to register Organization");
         organizationTemplateService.importTemplateToOrg(dto, request);
 
