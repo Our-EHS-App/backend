@@ -16,6 +16,7 @@ public interface FormMapper extends EntityMapper<FormDTO, Form> {
     @Mapping(target = "listStatus", source = "listStatus")
     @Mapping(target = "template", source = "template", qualifiedByName = "templateId")
     @Mapping(target = "createdDate", source = "createdDate")
+    @Mapping(target = "location", source = "location")
     FormDTO toDto(Form s);
 
     @Named("formStatusId")

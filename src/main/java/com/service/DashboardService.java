@@ -50,11 +50,8 @@ public class DashboardService {
             .map(i -> {
                 for (CategoryDashboardDTO submittedDto : submittedDtos) {
                     if (i.getCategoryId().equals(submittedDto.getCategoryId())) {
-                        submittedDto.getCategoryId().equals(i.getCategoryId());
                         Double percentage = submittedDto.getFormCount().doubleValue() / i.getFormCount().doubleValue() * 100;
                         i.setPercentage(percentage);
-                    } else {
-                        i.setPercentage(0D);
                     }
 
                 }

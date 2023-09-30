@@ -21,6 +21,15 @@ public class FormDTO implements Serializable {
     private TemplateDTO template;
 
     private Instant createdDate;
+    private LocationDTO location;
+
+    public LocationDTO getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationDTO location) {
+        this.location = location;
+    }
 
     public Instant getCreatedDate() {
         return createdDate;
