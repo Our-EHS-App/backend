@@ -11,12 +11,12 @@ import com.security.AuthoritiesConstants;
 import com.security.SecurityUtils;
 import com.service.dto.AdminUserDTO;
 import com.service.dto.UserDTO;
+
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.web.rest.errors.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -37,6 +37,7 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final MailService mailService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -47,11 +48,12 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
-        PasswordEncoder passwordEncoder,
+        MailService mailService, PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager,
         OrganizationRepository organizationRepository) {
         this.userRepository = userRepository;
+        this.mailService = mailService;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -128,7 +130,7 @@ public class UserService {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
         newUser.setImageUrl(userDTO.getImageUrl());
-        newUser.setLangKey(userDTO.getLangKey());
+        newUser.setLangKey(Objects.isNull(userDTO.getLangKey()) ? "en" : userDTO.getLangKey());
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -137,9 +139,10 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         newUser.setOrganization(organization);
-        userRepository.save(newUser);
+        newUser = userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
+        mailService.sendActivationEmail(newUser);
         return newUser;
     }
 
@@ -318,6 +321,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)

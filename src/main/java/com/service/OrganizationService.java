@@ -40,6 +40,7 @@ public class OrganizationService {
         dto.getMainUser().setOrganizationId(organization.getId());
         userService.registerUser(dto.getMainUser(), dto.getMainUser().getPassword(), organization);
         dto.setId(organization.getId());;
+
         return dto;
     }
 
