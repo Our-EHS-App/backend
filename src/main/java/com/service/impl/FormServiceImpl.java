@@ -6,6 +6,7 @@ import com.repository.FormRepository;
 import com.repository.FormValuesRepository;
 import com.repository.OrganizationTemplateRepository;
 import com.service.FormService;
+import com.service.MailService;
 import com.service.dto.FieldValueDTO;
 import com.service.dto.FormDTO;
 import com.service.dto.SubmitFormDTO;
@@ -21,7 +22,6 @@ import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import com.web.rest.errors.CustomException;
-import io.undertow.server.handlers.form.FormData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,13 +46,15 @@ public class FormServiceImpl implements FormService {
     private final FieldRepository fieldRepository;
 
     private final FormMapper formMapper;
+    private final MailService mailService;
     private final OrganizationTemplateRepository organizationTemplateRepository;
     private final FormValuesRepository formValuesRepository;
 
-    public FormServiceImpl(FormRepository formRepository, FieldRepository fieldRepository, FormMapper formMapper, OrganizationTemplateRepository organizationTemplateRepository, FormValuesRepository formValuesRepository) {
+    public FormServiceImpl(FormRepository formRepository, FieldRepository fieldRepository, FormMapper formMapper, MailService mailService, OrganizationTemplateRepository organizationTemplateRepository, FormValuesRepository formValuesRepository) {
         this.formRepository = formRepository;
         this.fieldRepository = fieldRepository;
         this.formMapper = formMapper;
+        this.mailService = mailService;
         this.organizationTemplateRepository = organizationTemplateRepository;
         this.formValuesRepository = formValuesRepository;
     }
@@ -128,12 +129,14 @@ public class FormServiceImpl implements FormService {
         if (latestForm.isPresent()) {
             Period period = Period.between(LocalDate.ofInstant(latestForm.get().getCreatedDate(), ZoneOffset.UTC), LocalDate.ofInstant(Instant.now(), ZoneOffset.UTC));
             if (period.getDays() < Integer.parseInt(organizationTemplate.getTemplate().getFrequency())) {
-                log.error("Frequency not exceeded");
+                log.error("Frequency: {},  not exceeded", organizationTemplate.getTemplate().getFrequency());
             }
         }
-
+        var ref = new Object() {
+            Integer formCount = 0;
+        };
         log.debug("Start generating form asynchronously! for template => {}, Thread => {}", organizationTemplate.getTemplate().getId(), currentThread);
-        return new AsyncResult<>(organizationTemplate.getLocations()
+        Future<List<Form>> futureForms = new AsyncResult<>(organizationTemplate.getLocations()
             .stream().map(location -> {
                 Form form = new Form();
                 form.setTemplate(organizationTemplate.getTemplate());
@@ -146,9 +149,13 @@ public class FormServiceImpl implements FormService {
                 form.setListStatus(formStatus.id(1L));
                 form.setOrganization(organizationTemplate.getOrganization());
                 log.debug("Finish generating form asynchronously! for template => {}, Thread => {}", organizationTemplate.getTemplate().getId(), currentThread);
+                ref.formCount = ref.formCount +1;
                 return formRepository.saveAndFlush(form);
             })
             .collect(Collectors.toList()));
+        log.info("Locations: {}, Forms: {}", organizationTemplate.getLocations().size(), ref.formCount);
+        mailService.sendGeneratedFormEmail(organizationTemplate, ref.formCount);
+        return futureForms;
     }
 
     public void submitForm(SubmitFormDTO values) {

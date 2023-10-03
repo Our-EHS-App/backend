@@ -31,7 +31,7 @@ public class GenerateFormJob {
 // Every minute!
 //    @Scheduled(cron = " */30 * * * * ?")
     @Scheduled(cron = "@daily")
-//    @EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void generateForms() {
         log.info("Generate forms job started");
         // todo Don't duplicate, Generate if latest form submitted or expired

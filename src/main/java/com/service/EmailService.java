@@ -18,7 +18,7 @@ public class EmailService {
 
     public void sendEmail(){
         User user = userRepository.findOneByLogin("abanmy").orElseThrow(UsernameAlreadyUsedException::new);
-        mailService.sendEmailFromTemplate(user, "mail/activationEmail", "email.activation.title");
+        mailService.sendEmailFromTemplate(user, "mail/generateForms", "email.activation.title");
     }
 //    private final JavaMailSender javaMailSender;
 //

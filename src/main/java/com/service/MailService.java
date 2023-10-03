@@ -1,5 +1,6 @@
 package com.service;
 
+import com.domain.OrganizationTemplate;
 import com.domain.User;
 
 import java.nio.charset.StandardCharsets;
@@ -93,6 +94,19 @@ public class MailService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendGeneratedFormEmail(OrganizationTemplate organizationTemplate, Integer formCount){
+        Locale locale = Locale.forLanguageTag("en");
+        String templateName =organizationTemplate.getTemplate().getTitleAr().isEmpty()? organizationTemplate.getTemplate().getTitleEn():organizationTemplate.getTemplate().getTitleAr();
+        Context context = new Context(locale);
+        context.setVariable("locationCounts", organizationTemplate.getLocations().size());
+        context.setVariable("templateName", templateName);
+        context.setVariable("formCount", formCount);
+        String content = templateEngine.process("mail/generateForms", context);
+        String subject = "Emtithal - Generated inspection lists";
+        sendEmail(organizationTemplate.getOrganization().getEmail(), subject, content, false, true);
     }
 
     @Async
