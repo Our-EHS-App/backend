@@ -4,6 +4,7 @@ import com.service.DashboardService;
 import com.service.dto.CategoryDetailsDashboardDTO;
 import com.service.dto.LocationDashboardDTO;
 import com.service.dto.LocationFormDTO;
+import com.service.dto.ValueDashboardByCategoryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class DashboardResource {
     @GetMapping("/by-category")
     public ResponseEntity<List<CategoryDetailsDashboardDTO>> byCategory(HttpServletRequest request){
         log.info("Get dashboard by category");
-        return ResponseEntity.ok().body(dashboardService.categoryDashboard(request));
+        return ResponseEntity.ok().body(dashboardService.valueDashboardByCategory(request));
     }
 
     @GetMapping("/by-location")

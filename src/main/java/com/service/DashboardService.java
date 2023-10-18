@@ -1,15 +1,10 @@
 package com.service;
 
-import com.domain.Form;
-import com.domain.Location;
 import com.repository.CategoryRepository;
 import com.repository.FormRepository;
 import com.repository.LocationRepository;
 import com.repository.OrganizationTemplateRepository;
-import com.service.dto.CategoryDashboardDTO;
-import com.service.dto.CategoryDetailsDashboardDTO;
-import com.service.dto.LocationDashboardDTO;
-import com.service.dto.LocationFormDTO;
+import com.service.dto.*;
 import com.service.mapper.CategoryMapper;
 import com.service.util.TokenUtils;
 import com.web.rest.errors.CustomException;
@@ -22,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DashboardService {
@@ -61,12 +57,29 @@ public class DashboardService {
             .collect(Collectors.toList());
     }
 
+    public List<CategoryDetailsDashboardDTO> valueDashboardByCategory(HttpServletRequest request){
+        return categoryRepository
+            .valueDashboardByCategory(Long.valueOf(tokenUtils.getOrgId(request)))
+            .stream()
+            .map(this::toDTODetails)
+            .collect(Collectors.toList());
+    }
+
     private CategoryDetailsDashboardDTO toDTODetails(CategoryDashboardDTO dto) {
         CategoryDetailsDashboardDTO detailsDashboardDTO = new CategoryDetailsDashboardDTO();
         detailsDashboardDTO.setCategoryDTO(categoryRepository.findById(dto.getCategoryId()).map(categoryMapper::toDto)
             .orElseThrow(() -> new CustomException("Not found!", "غير موجود!", "not.found")));
         DecimalFormat df = new DecimalFormat("0.00");
         detailsDashboardDTO.setPercentage(df.format(dto.getPercentage()));
+        return detailsDashboardDTO;
+    }
+
+    private CategoryDetailsDashboardDTO toDTODetails(ValueDashboardByCategoryDTO dto) {
+        CategoryDetailsDashboardDTO detailsDashboardDTO = new CategoryDetailsDashboardDTO();
+        detailsDashboardDTO.setCategoryDTO(categoryRepository.findById(dto.getCategoryId()).map(categoryMapper::toDto)
+            .orElseThrow(() -> new CustomException("Not found!", "غير موجود!", "not.found")));
+        DecimalFormat df = new DecimalFormat("0.00");
+        detailsDashboardDTO.setPercentage(String.valueOf(dto.getPercentage()));
         return detailsDashboardDTO;
     }
 
