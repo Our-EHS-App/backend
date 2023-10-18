@@ -82,9 +82,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<LocationDTO> findAll(Pageable pageable) {
+    public Page<LocationDTO> findAll(Pageable pageable, HttpServletRequest request) {
         log.debug("Request to get all Locations");
-        return locationRepository.findAll(pageable).map(locationMapper::toDto);
+        return locationRepository.findAllByOrganization_id(Long.valueOf(tokenUtils.getOrgId(request)),pageable).map(locationMapper::toDto);
     }
 
     @Override

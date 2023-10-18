@@ -42,7 +42,7 @@ public interface LocationService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<LocationDTO> findAll(Pageable pageable);
+    Page<LocationDTO> findAll(Pageable pageable, HttpServletRequest request);
 
     /**
      * Get the "id" location.

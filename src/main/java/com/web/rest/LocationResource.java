@@ -144,9 +144,9 @@ public class LocationResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of locations in body.
      */
     @GetMapping("/locations")
-    public ResponseEntity<List<LocationDTO>> getAllLocations(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<LocationDTO>> getAllLocations(@org.springdoc.api.annotations.ParameterObject Pageable pageable , HttpServletRequest request) {
         log.debug("REST request to get a page of Locations");
-        Page<LocationDTO> page = locationService.findAll(pageable);
+        Page<LocationDTO> page = locationService.findAll(pageable, request);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
