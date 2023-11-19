@@ -16,6 +16,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import tech.jhipster.config.JHipsterProperties;
 
+import java.util.List;
+
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
@@ -52,6 +54,7 @@ public class WebConfigurer implements ServletContextInitializer {
             source.registerCorsConfiguration("/management/**", config);
             source.registerCorsConfiguration("/v3/api-docs", config);
             source.registerCorsConfiguration("/swagger-ui/**", config);
+
         }
         return new CorsFilter(source);
     }
