@@ -187,7 +187,7 @@ jhipster:
     allowed-headers: "*"
     exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
     allow-credentials: true
-    max-age: 1800L
+    max-age: 1800
   mail:
     from: emtithal.app@gmail.com
   api-docs:
