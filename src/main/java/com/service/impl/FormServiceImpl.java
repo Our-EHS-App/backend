@@ -130,7 +130,7 @@ public class FormServiceImpl implements FormService {
             Period period = Period.between(LocalDate.ofInstant(latestForm.get().getCreatedDate(), ZoneOffset.UTC), LocalDate.ofInstant(Instant.now(), ZoneOffset.UTC));
             if (period.getDays() < Integer.parseInt(organizationTemplate.getTemplate().getFrequency())) {
                 log.error("Frequency: {},  not exceeded", organizationTemplate.getTemplate().getFrequency());
-                return null;
+//                return null;
             }
         }
         var ref = new Object() {
