@@ -55,7 +55,7 @@ public class OrganizationTemplateResource {
     }
 
     @GetMapping("/get-by-template-id/{id}")
-    public ResponseEntity<FormDTO> getByTemplateId(@PathVariable Long templateId, HttpServletRequest request){
+    public ResponseEntity<FormDTO> getByTemplateId(@PathVariable(value = "id") Long templateId, HttpServletRequest request){
         //todo add pagination
         log.debug("REST request to get a Latest form by template id: {}", templateId);
         String orgId = tokenUtils.getOrgId(request);
