@@ -55,10 +55,11 @@ public class OrganizationTemplateResource {
     }
 
     @GetMapping("/get-by-template-id/{id}")
-    public ResponseEntity<FormDTO> getByTemplateId(@PathVariable Long id){
+    public ResponseEntity<FormDTO> getByTemplateId(@PathVariable Long templateId, HttpServletRequest request){
         //todo add pagination
-        log.debug("REST request to get a Latest form by template id: {}", id);
-        FormDTO dto = organizationTemplateService.getLatestByTemplateId(id);
+        log.debug("REST request to get a Latest form by template id: {}", templateId);
+        String orgId = tokenUtils.getOrgId(request);
+        FormDTO dto = organizationTemplateService.getLatestByTemplateId(templateId, Long.valueOf(orgId));
         return ResponseEntity.ok().body(dto);
     }
 }

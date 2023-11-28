@@ -125,11 +125,11 @@ public class FormServiceImpl implements FormService {
     public Future<List<Form>> generateForm(OrganizationTemplate organizationTemplate) {
         String currentThread = Thread.currentThread().getName();
         Optional<Form> latestForm = formRepository
-            .findFirstByTemplate_idOrderByCreatedDateDesc(organizationTemplate.getTemplate().getId());
+            .findFirstByTemplate_idAndOrganization_idOrderByCreatedDateDesc(organizationTemplate.getTemplate().getId(), organizationTemplate.getOrganization().getId());
         if (latestForm.isPresent()) {
             Period period = Period.between(LocalDate.ofInstant(latestForm.get().getCreatedDate(), ZoneOffset.UTC), LocalDate.ofInstant(Instant.now(), ZoneOffset.UTC));
-            if (period.getDays() < Integer.parseInt(organizationTemplate.getTemplate().getFrequency())) {
-                log.error("Frequency: {},  not exceeded", organizationTemplate.getTemplate().getFrequency());
+            if (period.getDays() > Integer.parseInt(organizationTemplate.getTemplate().getFrequency())) {
+                log.error("Frequency: {},  is exceeded", organizationTemplate.getTemplate().getFrequency());
 //                return null;
             }
         }
@@ -226,8 +226,9 @@ public class FormServiceImpl implements FormService {
         return dto;
     }
 
-    public FormDTO findLatestByTemplateId(Long templateId) {
-        return formRepository.findFirstByTemplate_idOrderByCreatedDateDesc(templateId)
+    public FormDTO findLatestByTemplateId(Long templateId, Long orgId) {
+
+        return formRepository.findFirstByTemplate_idAndOrganization_idOrderByCreatedDateDesc(templateId, orgId)
             .map(formMapper::toDto)
             .map(this::getValues)
             .orElseThrow(() -> new CustomException("Form not found!", "النموذج غير موجود!", "not.found"));

@@ -1,7 +1,6 @@
 package com.repository;
 
 import com.domain.Form;
-import com.service.dto.FormDTO;
 import com.service.dto.LocationFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,7 @@ public interface FormRepository extends JpaRepository<Form, Long> {
     Page<Form> findAllByOrganizationTemplate_Organization_Id(Long id, Pageable pageable);
     List<Form> findAllByOrganization_Id(Long id);
     Optional<Form> findByIdAndListStatus_Id(Long formId, Long statusId);
-    Optional<Form> findFirstByTemplate_idOrderByCreatedDateDesc(Long templateId);
+    Optional<Form> findFirstByTemplate_idAndOrganization_idOrderByCreatedDateDesc(Long templateId, Long orgId);
 
     @Query(value = "select new com.service.dto.LocationFormDTO(f.location, f.listStatus.id, count(f.id)) from Form f" +
         " where f.organization.id =:orgId" +

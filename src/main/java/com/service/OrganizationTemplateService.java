@@ -130,7 +130,7 @@ public class OrganizationTemplateService {
     }
     //todo add location to OrganizationTemplate
 
-    public FormDTO getLatestByTemplateId(Long templateId) {
-        return formService.findLatestByTemplateId(templateId);
+    public FormDTO getLatestByTemplateId(Long templateId, Long orgId) {
+        return formService.findLatestByTemplateId(templateId, orgId);
     }
 }
